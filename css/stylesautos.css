@@ -1,6 +1,13 @@
 /* ENTREGA 1 - Estilos de categoria autos 101 */
 
-.navbar-toggler-icon {
+body{
+  max-width: 100%;
+  margin:0;
+  padding:0;
+}
+
+/* Se cambio por otro SVG  */
+/* .navbar-toggler-icon {
     display: flex;
     width: 1.5em;
     height: 1.5em;
@@ -9,12 +16,16 @@
     background-position: center;
     background-size: 100%;
     background-color: #1F262A;
-}
+} */
 
 
 #navbarNav {
   background-color: #1F262A;
   padding: 20px 0; /* ajusta la altura*/
+  width: 100%;
+  margin: 0;
+
+
 }
 
 #navbarNav .navbar-nav {
@@ -24,14 +35,31 @@
   align-items: center; 
   width: 100%;
   margin: 0;   /* elimina espacio por defecto */
+  list-style: none;
+
+}
+
+button.navbar-toggler {
+    background: #08131a;
+    border-radius: 6px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: none;
+    border: none;
 }
 
 .nav-link {
   font-family:'Lexend Deca', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 20px; 
   color: #FFFFFF;
+  text-decoration: none;
+  transition: all 150ms ease-in-out;
 }
-
+.nav-link:hover{
+  color:#393cf8ff;
+  text-decoration:underline;
+}
 
 #imgIA {
   width: 100%; 
@@ -70,6 +98,8 @@ height: 200px; /* altura */
 left: 29px;
 top: 271px;
 background-color: #1F262A;
+border-radius: 12px;
+
 }
 
 .card.h-100.shadow-sm{
@@ -77,6 +107,9 @@ background-color: #1F262A;
     flex-direction: row; /* organiza los flexbox */
     padding: 15px;
     width: 100%;
+    background-color: #1F262A;
+    border-radius: 12px;
+    margin-block: 15px;
 }
 
 .card-body {
@@ -93,15 +126,17 @@ background-color: #1F262A;
 }
 
 .card-text {
-    width: 600px; /* ancho */
-    height: 100px; /* altura */
+    width: 600px; 
+    height: 100px; 
     background: #08131A;
     border-radius: 6px;
     font-family: 'Lekend Deca', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 14px; 
     color: #FFFFFF;
     margin-left: 15px;
-    margin-top: 20px;
+    margin-top:-10px;
+    border: .8px solid #7575757c;
+    padding: 20px 15px;
 }
 
 .card-footer {
@@ -119,7 +154,7 @@ background-color: #1F262A;
   background-color: rgb(255, 215, 140);
   font-family: 'Albert Sans', sans-serif; ;
   border-radius: 10px;
-  padding: 3px;
+  padding: 3px 10px;
   color: black;
 }
 
@@ -128,14 +163,17 @@ background-color: #1F262A;
   background-color: orange;
  font-family: 'Albert Sans', sans-serif;
   border-radius: 10px;
-  padding: 3px;
+  padding: 3px 10px;
   color: black;
 }
+.container{
+  max-width: 95%;
+  margin:0 auto;
+}
 
+.containerNav{
+  display:flex;
 
-
-
-
-
+}
 
 
