@@ -1,0 +1,394 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap");
+
+:root {
+    --maxWidthButtons: 588px;
+}
+
+body,
+h1,
+h2,
+div {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100vw;
+    height: 100vh;
+}
+
+.container__form {
+    width: 100%;
+    height: 100%;
+    background: #1f262a;
+    border-radius: 0;
+}
+.container__background {
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/Hero.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    border-radius: 0;
+}
+.mercadoLogoHero {
+    position: absolute;
+    width: 460px;
+    height: 194px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background: rgba(255, 255, 255, 0.33);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+    border-radius: 12px;
+
+    display: flex;
+}
+.mercadoLogoHero img {
+    max-width: 500px;
+    max-height: 140px;
+    flex-shrink: 0;
+
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: multiply;
+    object-fit: cover;
+}
+.mercadoLogoHero__svg {
+    position: absolute;
+    bottom: 20px;
+    right: 50px;
+    width: 50px;
+    height: 43px;
+    flex-shrink: 0;
+    aspect-ratio: 50/43;
+}
+.mercadoLogoHero__text {
+    position: absolute;
+    bottom: 28px;
+    right: 110px;
+    color: #121212;
+    font-family: "League Spartan";
+    font-size: 27px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    transform: translateX(50%, 50%);
+}
+
+/* LADO DERECHO */
+
+.container__form__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 50px;
+    box-sizing: border-box;
+}
+
+.container__form__title {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 400;
+    font-size: 65px;
+    text-align: center;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+}
+
+.container__form__ingresar,
+.container__form__crearcuenta,
+.container__form__google,
+.separator,
+.forgot-password {
+    width: 100%;
+    max-width: 679px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#error {
+    color: #df2424;
+    display: none;
+    font-family: "Lexend Deca";
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.container__form__subtitle {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+    text-align: center;
+    color: #ffffff;
+    margin: 0 0 2rem 0;
+    max-width: 500px;
+    line-height: 1.2;
+}
+
+.container__form-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 679px;
+}
+
+.container__form label {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 8px;
+    align-self: flex-start;
+}
+
+.container__form__input {
+    padding: 12px 16px;
+    width: 100%;
+    height: 48px;
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    font-size: 16px;
+    font-family: "Lexend Deca", sans-serif;
+    outline: none;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.container__form__input:focus {
+    border: 2px solid #fd8618;
+    box-shadow: 0 0 0 3px rgba(253, 134, 24, 0.1);
+}
+
+.container__form__ingresar {
+    width: 100%;
+    height: 48px;
+    background: #fd8618;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    border: 1.2px solid rgba(55, 54, 54, 0.63);
+    color: white;
+    font-size: 16px;
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.container__form__ingresar:hover {
+    background: #e77515;
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.35);
+    transform: translateY(-2px);
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+    width: 100%;
+}
+
+.separator__line {
+    flex: 1;
+    height: 1px;
+    background: rgba(229, 229, 229, 0.3);
+}
+
+.separator__text {
+    margin: 0 16px;
+    color: #e8e8e8;
+    font-size: 19px;
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 300;
+}
+
+.container__form__crearcuenta {
+    width: 100%;
+    height: 48px;
+    background-color: transparent;
+    border: none;
+
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.container__form__crearcuenta:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+.container__form__google {
+    width: 100%;
+    height: 55px;
+    background: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    border: 0.6px solid #dadce0;
+    color: #3c4043;
+    font-size: 14px;
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.container__form__google:hover {
+    background: #f8f9fa;
+    border: 0.6px solid #c0c4c7;
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 23px;
+}
+
+.forgot-password {
+    text-align: right;
+    color: #e8e8e8;
+    font-size: 16px;
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 400;
+    text-decoration: none;
+    margin-top: 16px;
+    transition: all 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #52a3fb;
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #ff4757;
+    font-size: 14px;
+    font-family: "Lexend Deca", sans-serif;
+    margin: -20px 0 16px 0;
+    display: none;
+}
+
+.error-input {
+    border: 1px solid #ff4757 !important;
+    box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1) !important;
+}
+
+.error-label {
+    color: #ff4757 !important;
+}
+
+/* Responsividad -- MOVIL */
+
+@media (max-width: 768px) {
+    .container {
+        margin: 0;
+        display: block;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .container__background {
+        display: none;
+    }
+
+    .container__form {
+        border-radius: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .container__form__form {
+        padding: 20px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .container__form__title {
+        font-size: 48px;
+    }
+
+    .container__form__subtitle {
+        font-size: 24px;
+        max-width: 100%;
+    }
+
+    .container__form__input,
+    .container__form__ingresar,
+    .container__form__crearcuenta,
+    .container__form__google {
+        height: 52px;
+    }
+
+    .google-icon {
+        left: 20px;
+    }
+
+    .forgot-password {
+        text-align: center;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container__form__form {
+        padding: 16px;
+    }
+
+    .container__form__title {
+        font-size: 36px;
+    }
+
+    .container__form__subtitle {
+        font-size: 20px;
+    }
+}
+/* Cuando hay error */
+.error-input {
+    border: 1px solid #df2424 !important;
+}
+
+.error-label {
+    color: #df2424 !important;
+}
+
+#error {
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
