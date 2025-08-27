@@ -175,5 +175,105 @@ border-radius: 12px;
   display:flex;
 
 }
+/* CENTRADO Y RESPONSIVO DE PRODUCTOS - Básico */
+.productos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+.caja {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 220px;
+    text-align: center;
+}
+
+.caja img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    .caja {
+        width: 45%;
+    }
+}
+
+/* Celular pequeño */
+@media (max-width: 480px) {
+    .caja {
+        width: 80%;
+    }
+}
+
+/* AJUSTES RESPONSIVOS PARA CARDS */
+/* Tablet vertical 768px */
+@media (max-width: 768px) {
+  .card.h-100.shadow-sm {
+    flex-direction: column !important;
+    align-items: center;
+    width: 90% !important;
+  }
+
+  img.card-img-top {
+    width: 90% !important;
+    height: auto !important;
+  }
+
+  .card-body, .card-footer {
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .card-text {
+    width: 100% !important;
+    height: auto !important;
+    font-size: 13px;
+  }
+}
+
+/* Celular pequeño 320-480px */
+@media (max-width: 480px) {
+  .card.h-100.shadow-sm {
+    flex-direction: column !important;
+    padding: 10px;
+    margin-block: 10px;
+    width: 95% !important;
+  }
+
+  img.card-img-top {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 8px;
+  }
+
+  .card-body {
+    width: 100% !important;
+    padding: 5px;
+  }
+
+  .card-text {
+    width: 100% !important;
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .card-footer {
+    width: 100% !important;
+  }
+
+  .card-footer small,
+  .card-footer span {
+    font-size: 1rem;
+    padding: 3px 8px;
+  }
+}
 
 
