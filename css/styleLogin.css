@@ -366,6 +366,38 @@ div {
     }
 }
 
+/* Responsividad -- Tablet */
+@media screen and (min-width: 768px) {
+    .mercadoLogoHero {
+        width: 360px;
+    }
+    .mercadoLogoHero img {
+        max-width: 400px;
+        max-height: 120px;
+    }
+    .mercadoLogoHero__text {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-top: 8px;
+    }
+    .container__form__title {
+        font-size: 44px;
+        font-weight: 600;
+        color: #fff;
+        text-align: center;
+        margin-top: 16px;
+    }
+    .container__form__subtitle {
+        font-size: 24px;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        margin-top: 8px;
+    }
+}
+
 @media (max-width: 480px) {
     .container__form__form {
         padding: 16px;
