@@ -1,13 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const URL = "https://japceibal.github.io/emercado-api/cats_products/101.json";
+  // Obtengo el ID de la categoría desde localStorage
+  let catId = localStorage.getItem("catID");
+  // URL de la API para obtener los productos de la categoría
+  const URL = `https://japceibal.github.io/emercado-api/cats_products/${catId}.json`;
   const contenedor = document.querySelector("main.container");
-//CREAMOS CON js UNA FUNCION PARA TRAER CON FEATCH LA API DE LA CAT 101 DE AUTOS
+//CREAMOS CON js UNA FUNCION PARA TRAER CON FEATCH LA API DE LA CAT SELECCIONADA
   // Limpio lo que había (el cartel rojo de "Funcionalidad en desarrollo")
   contenedor.innerHTML = "";
 
   fetch(URL) 
     .then(response => response.json()) // Promesa que resuelve la respuesta en JSON
     .then(data => { // Promesa que maneja el JSON
+      document.getElementById("category_name").textContent = data.catName; 
+      // Actualizo el nombre de la categoría en el encabezado
       const productos = data.products; // Array de productos
 
       // Creo un contenedor con clases de Bootstrap
