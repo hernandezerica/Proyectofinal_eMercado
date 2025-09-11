@@ -5,7 +5,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>eMercado - Todo lo que busques está aquí</title>
-<link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <!-- Fuentes adicionales según tokens: Lexend Deca, Albert Sans, Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;700&family=Albert+Sans:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/stylesautos.css" rel="stylesheet">
 
@@ -31,7 +33,8 @@
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item search">
+            <input id="product-search" type="search" placeholder="Buscar autos..." aria-label="Buscar productos" />
           </li>
         </ul>
       </div>
@@ -47,11 +50,7 @@
 <!-- ENTREGA 1  -->
 
   <main class="pb-5 container">
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
-      </div>
-    </div>
+    <div id="product-list" class="product-list" aria-live="polite"></div>
   </main>
 
 
@@ -77,6 +76,7 @@
 
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.8/dist/axios.min.js" crossorigin="anonymous"></script>
   <script src="js/products.js"></script>
   <script src="js/manejoSesion.js"></script>
 </body>
