@@ -6,6 +6,20 @@ body{
   padding:0;
 }
 
+/* Contenedor listado (agregado para nuevo layout filtrable) */
+#product-list.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 4px 40px;
+}
+
+/* Aseguramos foco visible en tarjetas clickeables */
+.card[role="button"]:focus {
+  outline: 2px solid #393cf8ff;
+  outline-offset: 4px;
+}
+
 /* Se cambio por otro SVG  */
 /* .navbar-toggler-icon {
     display: flex;
