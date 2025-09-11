@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>eMercado - Todo lo que busques está aquí</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link href="css/font-awesome.min.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <link href="css/product-info.css" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav w-100 justify-content-between">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="categories.html">Categorías</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sell.html">Vender</a>
+          </li>
+          <li class="nav-item">
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main class="product-wrapper">
+    <!-- Skeleton de carga: se oculta cuando se carga el producto -->
+    <div id="product-skeleton" class="pi-skeleton" aria-hidden="true">
+      <div class="pi-skel-left">
+        <div class="skel-thumbs">
+          <div class="skel-thumb shimmer"></div>
+          <div class="skel-thumb shimmer"></div>
+          <div class="skel-thumb shimmer"></div>
+          <div class="skel-thumb shimmer"></div>
+        </div>
+        <div class="skel-main shimmer"></div>
+      </div>
+      <div class="pi-skel-right">
+        <div class="skel-line skel-title shimmer"></div>
+        <div class="skel-line skel-sub shimmer"></div>
+        <div class="skel-line shimmer"></div>
+        <div class="skel-line shimmer"></div>
+        <div class="skel-line shimmer"></div>
+        <div class="skel-line short shimmer"></div>
+      </div>
+    </div>
+  <div class="product-layout" id="product-layout" hidden>
+      <!-- Columna combinada (sticky) -->
+      <div class="media-column">
+        <div class="thumbs" id="thumbs"></div>
+        <div class="main-image-panel">
+          <div class="main-image-frame">
+            <img id="main-image" alt="Imagen principal" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel info derecha -->
+      <aside class="info-panel">
+        <h1 id="product-name" class="prod-title"></h1>
+        <p id="product-category" class="prod-subtitle"></p>
+        <p id="product-price" class="prod-price"></p>
+        <p class="prod-installments" id="installments-text"></p>
+
+        <div class="variants" id="variants"></div>
+
+        <div class="qty-block">
+          <label class="form-label mb-1">Agregue cantidad:</label>
+          <div class="qty-ctrl">
+            <button type="button" id="qty-minus" aria-label="Restar">-</button>
+            <span id="qty-value">1</span>
+            <button type="button" id="qty-plus" aria-label="Sumar">+</button>
+          </div>
+        </div>
+
+
+
+        <button id="add-to-cart" class="add-cart-btn" type="button">Agregar al carrito</button>
+
+        <div class="financing" id="financing-box">
+          <i class="fa fa-credit-card me-2" aria-hidden="true"></i>
+          <span class="financing-text">Hasta 12 cuotas sin intereses en bancos seleccionados</span>
+        </div>
+
+        <p id="product-description" class="prod-description"></p>
+
+        <div class="accordion custom-accordion" id="extra-info">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-truck me-2" aria-hidden="true"></i>Devoluciones y envíos</button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#extra-info">
+              <div class="accordion-body small">Información genérica de devoluciones y envíos.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-credit-card me-2" aria-hidden="true"></i>Métodos de pago</button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#extra-info">
+              <div class="accordion-body small">Tarjetas, transferencia y más.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="share mt-3" id="share-block">
+          <span class="share-label">Compartir</span>
+          <div class="share-icons" id="share-icons-inline"></div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="comments-section">
+      <h3 class="section-title">Comentarios:</h3>
+      <div id="comments-list" class="comments-list"></div>
+    </section>
+
+    <section class="related-section">
+      <h3 class="section-title">Productos relacionados:</h3>
+      <div id="related-products" class="related-grid"></div>
+    </section>
+  </main>
+  <footer class="text-muted">
+    <div class="container">
+      <p class="float-end">
+        <a href="#">Volver arriba</a>
+      </p>
+      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
+    </div>
+  </footer>
+  <div id="spinner-wrapper">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/init.js"></script>
+  <script src="js/product-info.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>eMercado - Todo lo que busques está aquí</title>
+  <!-- Fuentes adicionales según tokens: Lexend Deca, Albert Sans, Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;700&family=Albert+Sans:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link href="css/font-awesome.min.css" rel="stylesheet">
+  <link href="css/stylesautos.css" rel="stylesheet">
+
+  
+</head>
+
+<body>
+  <nav class="navBar">
+    <div class="containerNav">
+      <div link href="css/bootstrap.min.css" rel="stylesheet" class="collapse navbar-collapse" id="navbarNav">
+     
+        <ul class="navbar-nav flex-row w-100 justify-content-between">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu-icon lucide-menu"><path d="M4 12h16"/><path d="M4 18h16"/><path d="M4 6h16"/></svg>
+      </button>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="categories.html">Categorías</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sell.html">Vender</a>
+          </li>
+          <li class="nav-item search">
+            <input id="product-search" type="search" placeholder="Buscar autos..." aria-label="Buscar productos" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ENTREGA 1  -->
+  <div id="imgIA"><img src="img/Hero.png" alt="IA"></div>
+  <div id="encabezado">
+  <h1>LISTA DE AUTOS</h1>
+  <img src="img/LogoMercado.png" alt="Logo del eMercado">
+  </div>
+<!-- ENTREGA 1  -->
+
+  <main class="pb-5 container">
+    <div id="product-list" class="product-list" aria-live="polite"></div>
+  </main>
+
+
+  <footer class="text-muted">
+    <div class="container">
+      <p class="float-end">
+        <a href="#">Volver arriba</a>
+      </p>
+      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
+    </div>
+  </footer>
+
+
+  <div id="spinner-wrapper">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/init.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.8/dist/axios.min.js" crossorigin="anonymous"></script>
+  <script src="js/products.js"></script>
+  <script src="js/manejoSesion.js"></script>
+</body>
+
+</html>
