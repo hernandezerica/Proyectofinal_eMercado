@@ -14,6 +14,175 @@ body{
   padding: 4px 4px 40px;
 }
 
+/* Tarjeta de producto (layout horizontal) */
+.product-card {
+  --pc-bg: #ffffff;
+  --pc-border: #d2d9e4;
+  --pc-shadow: 0 4px 12px rgba(0,0,0,.12);
+  --pc-radius: 16px;
+  --pc-title-color: #111827; /* rgb(17,24,39) */
+  --pc-desc-bg: #f3f4f6;     /* rgb(243,244,246) */
+  --pc-desc-border: #dde0e6; /* aproximado */
+  --pc-desc-color: #374151;  /* rgb(55,65,81) */
+  --pc-price-top: #ffa845;   /* rgb(255,168,69) */
+  --pc-price-bottom: #ff8f0f;/* rgb(255,143,15) */
+  --pc-sold-bg: #e5e7eb;     /* rgb(229,231,235) */
+  --pc-focus: #393cf8;
+  position: relative;
+  display: grid;
+  grid-template-columns: 285px 1fr 276px; /* imagen | texto | meta */
+  align-items: center;
+  gap: 32px;
+  background: var(--pc-bg);
+  border: 1px solid var(--pc-border);
+  box-shadow: var(--pc-shadow);
+  border-radius: var(--pc-radius);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: box-shadow .25s, transform .25s;
+}
+
+.product-card:focus-visible {
+  outline: 3px solid var(--pc-focus);
+  outline-offset: 2px;
+}
+
+.product-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+  transform: translateY(-2px);
+}
+
+.pc-img img {
+  width: 100%;
+  height: 153px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  background: #f3f4f6;
+}
+
+.pc-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pc-title {
+  margin: 0;
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--pc-title-color);
+}
+
+.pc-desc {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  line-height: 1.15;
+  font-weight: 400;
+  color: var(--pc-desc-color);
+  background: var(--pc-desc-bg);
+  border: 1px solid var(--pc-desc-border);
+  border-radius: 6px;
+  padding: 14px 18px;
+  max-height: 110px;
+  overflow: hidden;
+  position: relative;
+}
+
+.pc-desc:after { /* fade al final del texto si se trunca */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(243,244,246,0) 60%, rgba(243,244,246,0.95) 95%);
+  pointer-events: none;
+}
+
+.pc-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.pc-price {
+  width: 100%;
+  max-width: 258px;
+  height: 44px;
+  background: var(--pc-price-top);
+  position: relative;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: #000;
+  overflow: hidden;
+}
+
+.pc-price:before { /* capa inferior que sugiere doble rectángulo */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--pc-price-bottom);
+  transform: translateY(3px);
+  filter: brightness(0.98);
+  border-radius: 5px;
+  z-index: -1;
+}
+
+.pc-price-inner {
+  position: relative;
+  z-index: 2;
+  letter-spacing: .5px;
+}
+
+.pc-sold {
+  width: 100%;
+  max-width: 258px;
+  height: 29px;
+  background: var(--pc-sold-bg);
+  border: 1px solid var(--pc-sold-bg);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  color: #111827;
+  letter-spacing: .5px;
+}
+
+/* Hover micro interacción en precio */
+.product-card:hover .pc-price-inner { animation: pcPulse 1.4s ease-in-out infinite; }
+@keyframes pcPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+/* Responsive: stack columnas */
+@media (max-width: 1100px) {
+  .product-card { grid-template-columns: 240px 1fr 220px; gap: 20px; }
+  .pc-title { font-size: 22px; }
+  .pc-desc { font-size: 18px; }
+}
+@media (max-width: 900px) {
+  .product-card { grid-template-columns: 220px 1fr; grid-template-rows: auto auto; }
+  .pc-meta { grid-column: span 2; flex-direction: row; }
+  .pc-desc { max-height: none; }
+}
+@media (max-width: 640px) {
+  .product-card { grid-template-columns: 1fr; padding: 16px; }
+  .pc-img img { height: 190px; }
+  .pc-meta { flex-direction: column; align-items: stretch; }
+  .pc-price, .pc-sold { max-width: 100%; }
+  .pc-title { font-size: 20px; }
+  .pc-desc { font-size: 16px; }
+}
+
 /* Aseguramos foco visible en tarjetas clickeables */
 .card[role="button"]:focus {
   outline: 2px solid #393cf8ff;

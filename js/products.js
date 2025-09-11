@@ -40,19 +40,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const frag = document.createDocumentFragment();
     items.forEach(prod => {
       const wrapper = document.createElement("div");
-      // Estructura accesible: role button + teclado
+      // Nueva estructura inspirada en diseño: imagen | contenido | meta (precio / vendidos)
       wrapper.innerHTML = `
-        <div class="card h-100 shadow-sm" role="button" tabindex="0" aria-label="Ver producto ${escapeHtml(prod.name)}">
-          <img src="${escapeHtml(prod.image)}" class="card-img-top" alt="${escapeHtml(prod.name)}">
-          <div class="card-body">
-            <h5 class="card-title">${escapeHtml(prod.name)}</h5>
-            <p class="card-text">${escapeHtml(prod.description)}</p>
+        <article class="product-card" role="button" tabindex="0" aria-label="Ver producto ${escapeHtml(prod.name)}">
+          <div class="pc-img">
+            <img src="${escapeHtml(prod.image)}" alt="${escapeHtml(prod.name)}" loading="lazy" onerror="this.src='img/cars_index.jpg'" />
           </div>
-          <div class="card-footer">
-            <span>${escapeHtml(prod.currency)} ${escapeHtml(prod.cost)}</span>
-            <small>${escapeHtml(prod.soldCount)} VENDIDOS</small>
+          <div class="pc-content">
+            <h3 class="pc-title">${escapeHtml(prod.name)}</h3>
+            <p class="pc-desc">${escapeHtml(prod.description)}</p>
           </div>
-        </div>`;
+          <div class="pc-meta">
+            <div class="pc-price" aria-label="Precio ${escapeHtml(prod.currency)} ${escapeHtml(prod.cost)}">
+              <span class="pc-price-inner">${escapeHtml(prod.currency)} ${escapeHtml(prod.cost)}</span>
+            </div>
+            <div class="pc-sold" aria-label="${escapeHtml(prod.soldCount)} vendidos">${escapeHtml(prod.soldCount)} VENDIDOS</div>
+          </div>
+        </article>`;
       const card = wrapper.firstElementChild;
       card.addEventListener("click", () => goTo(prod.id));
       card.addEventListener("keypress", (e) => { if (e.key === "Enter") goTo(prod.id); });
