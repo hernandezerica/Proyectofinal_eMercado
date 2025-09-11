@@ -1,4 +1,4 @@
-/* ENTREGA 1 - Estilos de categoria autos 101 */
+/* ENTREGA 1 - Estilos de categoria */
 
 body{
   max-width: 100%;
@@ -89,6 +89,10 @@ color: #000000;
 
 #encabezado img {
   max-height: 85px;  /* ajusta el tamaño del logo */
+}
+
+#category_name {
+  text-transform: uppercase;
 }
 
 img.card-img-top {
