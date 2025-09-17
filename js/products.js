@@ -107,4 +107,71 @@ document.addEventListener("DOMContentLoaded", () => {
   // 10. Estado inicial mientras llegan los datos
   if (contenedor) contenedor.innerHTML = '<div class="text-center text-muted py-4">Cargando productos...</div>';
   cargar();
+
+  // Entrega 3 - ericahernandez
+
+  // Referencias a inputs y botones
+const minInput = document.getElementById("rangeFilterCountMin");
+const maxInput = document.getElementById("rangeFilterCountMax");
+const btnFiltrar = document.getElementById("rangeFilterCount");
+const btnLimpiar = document.getElementById("clearRangeFilter");
+const btnAsc = document.getElementById("sortAsc");
+const btnDesc = document.getElementById("sortDesc");
+const btnRelev = document.getElementById("sortByCount");
+
+// Estado de rango
+let minPrice = null;
+let maxPrice = null;
+
+// Reusamos aplicarFiltro (ya existe arriba) pero extendido con precio
+const aplicarFiltroExtendido = () => {
+  const q = (searchInput?.value || "").trim().toLowerCase();
+  filtrados = productos.filter(p => {
+    const matchText =
+      !q ||
+      (p.name && p.name.toLowerCase().includes(q)) ||
+      (p.description && p.description.toLowerCase().includes(q));
+    const matchPrice =
+      (minPrice === null || p.cost >= minPrice) &&
+      (maxPrice === null || p.cost <= maxPrice);
+    return matchText && matchPrice;
+  });
+  render(filtrados);
+};
+
+// Ordenar sobre filtrados
+const ordenar = (criterio) => {
+  if (!filtrados.length) return;
+  filtrados.sort((a, b) => {
+    if (criterio === "asc") return a.cost - b.cost;
+    if (criterio === "desc") return b.cost - a.cost;
+    if (criterio === "relev") return b.soldCount - a.soldCount;
+    return 0;
+  });
+  render(filtrados);
+};
+
+// Eventos de rango
+btnFiltrar?.addEventListener("click", () => {
+  minPrice = minInput.value ? parseInt(minInput.value) : null;
+  maxPrice = maxInput.value ? parseInt(maxInput.value) : null;
+  aplicarFiltroExtendido();
 });
+
+btnLimpiar?.addEventListener("click", () => {
+  minInput.value = "";
+  maxInput.value = "";
+  minPrice = null;
+  maxPrice = null;
+  aplicarFiltroExtendido();
+});
+
+// Eventos de orden
+btnAsc?.addEventListener("click", () => ordenar("asc"));
+btnDesc?.addEventListener("click", () => ordenar("desc"));
+btnRelev?.addEventListener("click", () => ordenar("relev"));
+
+// Entrega 3 - ericahernandez
+
+});
+
