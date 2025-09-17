@@ -50,6 +50,44 @@
 <!-- ENTREGA 1  -->
 
   <main class="pb-5 container">
+    <!-- ENTREGA 3 - ericahernandez -->
+    <div class="row">
+        <div>
+          <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
+            <p class="titlefiltro" >Ordenar por:</p>
+            <input type="radio" class="btn-check" name="options" id="sortAsc">
+            <label class="btn btn-light" for="sortAsc">Menor precio</label>
+            <input type="radio" class="btn-check" name="options" id="sortDesc">
+            <label class="btn btn-light" for="sortDesc">Mayor precio</label>
+            <input type="radio" class="btn-check" name="options" id="sortByCount" checked>
+            <label class="btn btn-light" for="sortByCount"><i class="fas fa-sort-amount-down mr-1"></i></label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div >
+          <div >
+            <div class="col">
+              <p class="titlefiltro">Ingresar precio:</p>
+            </div>
+            <div class="col">
+              <input class="form-control" type="number" placeholder="min." id="rangeFilterCountMin">
+            </div>
+            <div class="col">
+              <input class="form-control" type="number" placeholder="máx." id="rangeFilterCountMax">
+            </div>
+            <div class="col-3 p-0">
+              <br>
+              <div class="btn-group" role="group">
+                <button class="btn btn-light btn-block" id="rangeFilterCount">Filtrar</button>
+                <button class="btn btn-link btn-sm" id="clearRangeFilter">Limpiar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ENTREGA 3 - ericahernandez -->
+      <br>
     <div id="product-list" class="product-list" aria-live="polite"></div>
   </main>
 
@@ -79,6 +117,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios@1.6.8/dist/axios.min.js" crossorigin="anonymous"></script>
   <script src="js/products.js"></script>
   <script src="js/manejoSesion.js"></script>
+  
 </body>
 
 </html>
