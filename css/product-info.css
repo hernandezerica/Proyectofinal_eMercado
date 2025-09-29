@@ -120,3 +120,66 @@ body { background:#fff; color:#111; font-family: 'Raleway', system-ui, Arial, sa
   .prod-price { font-size:20px; }
   .related-grid { grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); }
 }
+
+/* Estilos comentarios y estrellas - ericahernandez */
+
+
+
+h2 {
+  font-family:'Lexend Deca', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px; 
+
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.comentario {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.comentario strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#comentarios {
+  margin-top: 20px;
+}
+
+/* Estilo estrellas */
+.rating {
+  display: inline-flex; 
+  flex-direction: row-reverse; 
+  gap: 5px; /* Espacio entre estrellas */
+  font-size: 5px; /* Tamaño de las estrellas */
+}
+
+.rating input {
+  display: none; /* ocultamos los radios */
+}
+
+.rating label {
+  font-size: 28px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+/* cuando está seleccionado */
+.rating input:checked ~ label {
+  color: rgba(255, 217, 0, 0.863);
+}
+
+/* hover */
+.rating label:hover,
+.rating label:hover ~ label {
+  color: rgba(255, 217, 0, 0.795);
+}

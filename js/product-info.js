@@ -156,3 +156,72 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 });
+
+// ENTREGA 4 - ericahernandez
+
+// Traemos el usuario guardado en el login
+    const userData = JSON.parse(localStorage.getItem("Datos de usuario"));
+
+    if (!userData) {
+      document.getElementById("formComentario").innerHTML = "<p><em>Debes iniciar sesión para comentar.</em></p>";
+    }
+
+    document.addEventListener("DOMContentLoaded", mostrarComentarios);
+
+    const form = document.getElementById("formComentario");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const texto = document.getElementById("texto").value.trim();
+      const rating = document.querySelector('input[name="rating"]:checked');
+
+      if (userData && texto && rating) {
+        const nuevoComentario = {
+  usuario: userData.email, // ahora muestra el email del login
+  texto: texto,
+  fecha: new Date().toLocaleString(),
+  estrellas: rating.value
+};
+
+        let comentarios = JSON.parse(localStorage.getItem("comments-list")) || [];
+        comentarios.push(nuevoComentario);
+
+        localStorage.setItem("comments-list", JSON.stringify(comentarios));
+
+        form.reset();
+        // Desmarcar estrellas
+        document.querySelectorAll('input[name="rating"]').forEach(el => el.checked = false);
+
+        mostrarComentarios();
+      } else {
+        alert("Debes escribir un comentario y elegir una calificación.");
+      }
+    });
+
+    function mostrarComentarios() {
+      const contenedor = document.getElementById("comments-list");
+      contenedor.innerHTML = "";
+
+      let comentarios = JSON.parse(localStorage.getItem("comments-list")) || [];
+
+      comentarios.forEach(com => {
+        const div = document.createElement("div");
+        div.classList.add("comentario");
+
+        // Generamos las estrellas para mostrar
+        let estrellasHTML = "";
+        for (let i = 1; i <= 5; i++) {
+          estrellasHTML += i <= com.estrellas ? "★" : "☆";
+        }
+
+        div.innerHTML = `
+          <strong>${com.usuario}</strong>
+          <em>${com.fecha}</em>
+          <p>${com.texto}</p>
+          <p>Calificación: ${estrellasHTML}</p>
+        `;
+        contenedor.appendChild(div);
+      });
+    }
+   
