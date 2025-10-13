@@ -1,0 +1,497 @@
+/* Sistema de Tema Claro/Oscuro */
+
+/* Variables para tema claro (por defecto) */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-card: #ffffff;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --navbar-bg: #343a40;
+  --navbar-text: #ffffff;
+}
+
+/* Variables para tema oscuro */
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-card: #2d2d2d;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --border-color: #404040;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --navbar-bg: #1a1a1a;
+  --navbar-text: #e0e0e0;
+}
+
+/* Aplicar variables a los elementos */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bg-light {
+  background-color: var(--bg-secondary) !important;
+}
+
+.card {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.navbar-dark {
+  background-color: var(--navbar-bg) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: var(--navbar-text) !important;
+}
+
+.text-muted {
+  color: var(--text-secondary) !important;
+}
+
+.border,
+.border-top,
+.border-bottom,
+.border-start,
+.border-end {
+  border-color: var(--border-color) !important;
+}
+
+.shadow,
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem var(--shadow) !important;
+}
+
+/* Toggle de tema - Switch estilo Bootstrap */
+.theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle-label {
+  font-size: 14px;
+  color: var(--navbar-text);
+  margin: 0;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.theme-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .theme-slider {
+  background-color: #0d6efd;
+}
+
+input:checked + .theme-slider:before {
+  transform: translateX(24px);
+}
+
+/* Iconos del toggle */
+.theme-slider:after {
+  content: "☀️";
+  position: absolute;
+  right: 6px;
+  top: 2px;
+  font-size: 14px;
+}
+
+input:checked + .theme-slider:after {
+  content: "🌙";
+  right: auto;
+  left: 6px;
+}
+
+/* Ajustes para elementos específicos */
+[data-theme="dark"] .jumbotron {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="dark"] .list-group-item {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: #0d6efd;
+}
+
+[data-theme="dark"] .modal-content {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .table {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="dark"] .alert-light {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* Ajustes para botones en modo oscuro */
+[data-theme="dark"] .btn-light {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn-light:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Estilos específicos para products.html */
+[data-theme="dark"] .navBar {
+  background-color: var(--navbar-bg);
+}
+
+[data-theme="dark"] .navBar .nav-link {
+  color: var(--navbar-text);
+}
+
+[data-theme="dark"] #product-search {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .product-card {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* Estilos para product-info.html */
+[data-theme="dark"] .product-wrapper {
+  background-color: var(--bg-primary);
+}
+
+[data-theme="dark"] .comment-item {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .comment-user {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .comment-text {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .add-comment-section {
+  background-color: var(--bg-card);
+}
+
+[data-theme="dark"] textarea {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] textarea:focus {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: #0d6efd;
+}
+
+/* Skeleton loader en modo oscuro */
+[data-theme="dark"] .shimmer {
+  background: linear-gradient(90deg, var(--bg-secondary) 0%, #3a3a3a 50%, var(--bg-secondary) 100%);
+}
+
+/* Footer en modo oscuro */
+[data-theme="dark"] footer {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+/* Breadcrumb en modo oscuro */
+[data-theme="dark"] .breadcrumb {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="dark"] .breadcrumb-item + .breadcrumb-item::before {
+  color: var(--text-secondary);
+}
+
+/* Ajustes para comentarios en modo oscuro */
+[data-theme="dark"] .comment-row {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .comment-user-stars {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .comment-stars {
+  color: #ffc107;
+}
+
+[data-theme="dark"] .comment-date {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .comment-login-required {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .comment-login-required a {
+  color: #4a9eff;
+}
+
+/* Botones principales en modo oscuro */
+[data-theme="dark"] .btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+/* Inputs y selects en modo oscuro */
+[data-theme="dark"] input,
+[data-theme="dark"] select {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+[data-theme="dark"] input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+/* Cards de productos en modo oscuro */
+[data-theme="dark"] .custom-card {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .custom-card:hover {
+  box-shadow: 0 0.5rem 1rem var(--shadow);
+}
+
+/* Precio y botones en product-info */
+[data-theme="dark"] #product-price {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] #add-to-cart {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #ffffff;
+}
+
+[data-theme="dark"] #add-to-cart:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+/* Controles de cantidad */
+[data-theme="dark"] .qty-controls {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .qty-controls button {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .qty-controls button:hover {
+  background-color: var(--bg-card);
+}
+
+[data-theme="dark"] .qty-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Productos relacionados */
+[data-theme="dark"] .related-card {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .related-card:hover {
+  background-color: var(--bg-secondary);
+  cursor: pointer;
+}
+
+[data-theme="dark"] .rel-name {
+  color: var(--text-primary);
+}
+
+/* Iconos de compartir */
+[data-theme="dark"] .share-ico {
+  color: var(--text-primary);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .share-ico:hover {
+  background-color: var(--bg-secondary);
+  color: #0d6efd;
+}
+
+/* Imágenes y galería */
+[data-theme="dark"] #thumbs button {
+  border-color: var(--border-color);
+  background-color: var(--bg-card);
+}
+
+[data-theme="dark"] #thumbs button.active {
+  border-color: #0d6efd;
+}
+
+[data-theme="dark"] #thumbs button:hover {
+  border-color: #0d6efd;
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .variant-item {
+  border-color: var(--border-color);
+  background-color: var(--bg-card);
+}
+
+[data-theme="dark"] .variant-item.active {
+  border-color: #0d6efd;
+}
+
+/* Lista de productos (products.html) */
+[data-theme="dark"] .list-group-item {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .list-group-item:hover {
+  background-color: var(--bg-secondary);
+}
+
+/* Filtros y ordenamiento */
+[data-theme="dark"] .filter-container {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+/* Alertas en modo oscuro */
+[data-theme="dark"] .alert {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .alert-danger {
+  background-color: #5c1a1a;
+  color: #ff6b6b;
+  border-color: #8b0000;
+}
+
+[data-theme="dark"] .alert-success {
+  background-color: #1a4d2e;
+  color: #6bff6b;
+  border-color: #0f5132;
+}
+
+[data-theme="dark"] .alert-info {
+  background-color: #1a3d5c;
+  color: #6bb6ff;
+  border-color: #084298;
+}

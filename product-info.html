@@ -11,6 +11,8 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
   <link href="css/product-info.css" rel="stylesheet">
+  <link href="css/theme.css" rel="stylesheet">
+  <script src="js/theme.js"></script>
 </head>
 
 <body>
@@ -32,6 +34,15 @@
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
           <li class="nav-item">
+          </li>
+          <!-- Toggle de tema claro/oscuro -->
+          <li class="nav-item">
+            <div class="theme-toggle-wrapper nav-link">
+              <label class="theme-switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="theme-slider"></span>
+              </label>
+            </div>
           </li>
         </ul>
       </div>
@@ -129,22 +140,30 @@
       <div id="comments-list" class="comments-list"></div>
     </section>
 
-    <br>
-
     <!-- Sección para agregar comentarios - entrega 4 - ericahernandez -->
-    <section class="agregarcoment">
-      <h2>Agregar Comentario
-         <span class="rating">
-      <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
-      <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
-      <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-      <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-      <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
-    </span>
-      </h2>
-      <form id="formComentario">
-      <textarea id="texto" placeholder="Escribe tu comentario..." rows="4" cols="50" required></textarea><br><br>
-      <button type="submit">Enviar</button>
+    <!-- Formulario minimalista estilo Figma con estrellas inline -->
+    <section class="add-comment-section">
+      <h3 class="section-title comment-form-title">
+        Comentar
+        <span class="rating-stars-inline" id="rating-stars-inline">
+          <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 estrellas">★</label>
+          <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 estrellas">★</label>
+          <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 estrellas">★</label>
+          <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 estrellas">★</label>
+          <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 estrella">★</label>
+        </span>
+      </h3>
+      <form id="formComentario" class="comment-form">
+        <div class="comment-input-wrapper">
+          <textarea 
+            id="texto" 
+            class="comment-textarea" 
+            placeholder="Escribe tu comentario..." 
+            rows="3" 
+            required
+            maxlength="500"></textarea>
+          <button type="submit" class="comment-submit-btn">Publicar</button>
+        </div>
       </form>
     </section>
 

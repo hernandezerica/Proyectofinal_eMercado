@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </article>`;
       const card = wrapper.firstElementChild;
       card.addEventListener("click", () => goTo(prod.id));
-      card.addEventListener("keypress", (e) => { if (e.key === "Enter") goTo(prod.id); });
+      card.addEventListener("keydown", (e) => { if (e.key === "Enter") goTo(prod.id); });
       frag.appendChild(card);
     });
     contenedor.appendChild(frag);

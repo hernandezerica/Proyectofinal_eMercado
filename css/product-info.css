@@ -79,6 +79,29 @@ body { background:#fff; color:#111; font-family: 'Raleway', system-ui, Arial, sa
 .comment-date i { font-size:11px; color:#999; }
 .comment-text { font-size:12px; line-height:1.45; color:#222; }
 
+/* Botón de eliminar comentario */
+.comment-delete-btn {
+  background: transparent;
+  border: none;
+  color: #999;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  margin-left: 8px;
+  transition: color 0.2s ease, transform 0.15s ease;
+  font-weight: 300;
+}
+
+.comment-delete-btn:hover {
+  color: #e74c3c;
+  transform: scale(1.2);
+}
+
+.comment-delete-btn:active {
+  transform: scale(0.95);
+}
+
 /* Related */
 .related-section { margin-top:50px; }
 .related-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:18px; max-width:680px; }
@@ -121,65 +144,383 @@ body { background:#fff; color:#111; font-family: 'Raleway', system-ui, Arial, sa
   .related-grid { grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); }
 }
 
-/* Estilos comentarios y estrellas - ericahernandez */
+/* ================= Formulario de Comentarios - entrega 4 - ericahernandez ================= */
 
-
-
-h2 {
-  font-family:'Lexend Deca', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 15px; 
-
+/* Sección de agregar comentario con diseño minimalista tipo Figma */
+.add-comment-section {
+  margin-top: 40px;
+  max-width: 520px;
 }
 
-.titulo {
+.comment-form-title {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
-.comentario {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  background: #f9f9f9;
+/* Estrellas inline junto al título "Comentar" */
+.rating-stars-inline {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  gap: 4px;
+  align-items: center;
 }
 
-.comentario strong {
-  display: block;
-  margin-bottom: 5px;
+.rating-stars-inline input {
+  display: none;
 }
 
-#comentarios {
-  margin-top: 20px;
-}
-
-/* Estilo estrellas */
-.rating {
-  display: inline-flex; 
-  flex-direction: row-reverse; 
-  gap: 5px; /* Espacio entre estrellas */
-  font-size: 5px; /* Tamaño de las estrellas */
-}
-
-.rating input {
-  display: none; /* ocultamos los radios */
-}
-
-.rating label {
-  font-size: 28px;
-  color: #ccc;
+.rating-stars-inline label {
+  font-size: 20px;
+  color: #ddd;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 0.2s ease, transform 0.15s ease;
+  line-height: 1;
 }
 
-/* cuando está seleccionado */
-.rating input:checked ~ label {
-  color: rgba(255, 217, 0, 0.863);
+/* Efecto hover: ilumina la estrella y todas las anteriores */
+.rating-stars-inline label:hover,
+.rating-stars-inline label:hover ~ label {
+  color: #ffd700;
+  transform: scale(1.1);
 }
 
-/* hover */
-.rating label:hover,
-.rating label:hover ~ label {
-  color: rgba(255, 217, 0, 0.795);
+/* Cuando una estrella está seleccionada */
+.rating-stars-inline input:checked ~ label {
+  color: #ffd700;
+}
+
+/* Formulario minimalista */
+.comment-form {
+  margin: 0;
+}
+
+.comment-input-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 24px;
+  padding: 8px 8px 8px 18px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comment-input-wrapper:focus-within {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.comment-textarea {
+  flex: 1;
+  border: none;
+  background: transparent;
+  resize: none;
+  font-size: 14px;
+  font-family: 'Raleway', sans-serif;
+  padding: 8px 0;
+  outline: none;
+  line-height: 1.5;
+  color: #333;
+}
+
+.comment-textarea::placeholder {
+  color: #999;
+}
+
+.comment-submit-btn {
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 18px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  white-space: nowrap;
+  align-self: flex-end;
+}
+
+.comment-submit-btn:hover {
+  background: #357abd;
+}
+
+.comment-submit-btn:active {
+  transform: scale(0.95);
+}
+
+/* Animación de envío del comentario */
+@keyframes commentSent {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.comment-sent-animation {
+  animation: commentSent 0.6s ease-out;
+}
+
+/* Mensaje cuando no hay usuario logueado */
+.comment-login-required {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #856404;
+  text-align: center;
+}
+
+.comment-login-required a {
+  color: #856404;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+/* ================= Adaptación para Modo Oscuro ================= */
+
+/* Body y wrapper en modo oscuro */
+[data-theme="dark"] body {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .product-wrapper {
+  background: #1a1a1a;
+}
+
+/* Imágenes y galería */
+[data-theme="dark"] .thumbs button {
+  border-color: #404040;
+  background: #2d2d2d;
+}
+
+[data-theme="dark"] .thumbs button.active {
+  outline-color: #e0e0e0;
+}
+
+[data-theme="dark"] .main-image-frame {
+  background: #2d2d2d;
+}
+
+/* Info panel */
+[data-theme="dark"] .prod-title {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .prod-subtitle {
+  color: #a0a0a0;
+}
+
+[data-theme="dark"] .prod-price {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .prod-installments {
+  color: #b0b0b0;
+}
+
+/* Variantes */
+[data-theme="dark"] .variant-item {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+[data-theme="dark"] .variant-item.active {
+  border-color: #e0e0e0;
+}
+
+/* Controles de cantidad */
+[data-theme="dark"] .qty-ctrl {
+  background: #2d2d2d;
+}
+
+[data-theme="dark"] .qty-ctrl button {
+  background: #e0e0e0;
+  color: #1a1a1a;
+}
+
+[data-theme="dark"] .qty-ctrl button:disabled {
+  background: #555;
+  color: #999;
+}
+
+/* Botón agregar al carrito */
+[data-theme="dark"] .add-cart-btn {
+  background: #0d6efd;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .add-cart-btn:hover {
+  background: #0b5ed7;
+}
+
+/* Financiamiento */
+[data-theme="dark"] .financing {
+  background: #2d2d2d;
+  color: #e0e0e0;
+}
+
+/* Descripción */
+[data-theme="dark"] .prod-description {
+  color: #b0b0b0;
+}
+
+/* Acordeón */
+[data-theme="dark"] .custom-accordion .accordion-button {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .custom-accordion .accordion-item {
+  border-bottom-color: #404040;
+  background: #1a1a1a;
+}
+
+[data-theme="dark"] .custom-accordion .accordion-body {
+  background: #1a1a1a;
+  color: #b0b0b0;
+}
+
+/* Compartir */
+[data-theme="dark"] .share-ico {
+  background: #2d2d2d;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .share-ico:hover {
+  background: #3a3a3a;
+  color: #0d6efd;
+}
+
+/* Comentarios */
+[data-theme="dark"] .comment-item {
+  border-color: #404040;
+  background: #2d2d2d;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .comment-user {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .comment-stars {
+  color: #ffd700;
+}
+
+[data-theme="dark"] .comment-date {
+  color: #a0a0a0;
+}
+
+[data-theme="dark"] .comment-date i {
+  color: #808080;
+}
+
+[data-theme="dark"] .comment-text {
+  color: #b0b0b0;
+}
+
+/* Formulario de comentarios */
+[data-theme="dark"] .comment-input-wrapper {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+[data-theme="dark"] .comment-input-wrapper:focus-within {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+[data-theme="dark"] .comment-textarea {
+  color: #e0e0e0;
+  background: transparent;
+}
+
+[data-theme="dark"] .comment-textarea::placeholder {
+  color: #808080;
+}
+
+[data-theme="dark"] .comment-submit-btn {
+  background: #0d6efd;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .comment-submit-btn:hover {
+  background: #0b5ed7;
+}
+
+/* Rating stars */
+[data-theme="dark"] .rating-stars-inline label {
+  color: #555;
+}
+
+[data-theme="dark"] .rating-stars-inline label:hover,
+[data-theme="dark"] .rating-stars-inline label:hover ~ label {
+  color: #ffd700;
+}
+
+[data-theme="dark"] .rating-stars-inline input:checked ~ label {
+  color: #ffd700;
+}
+
+/* Login required message */
+[data-theme="dark"] .comment-login-required {
+  background: #2d2d2d;
+  border-color: #ffc107;
+  color: #ffc107;
+}
+
+[data-theme="dark"] .comment-login-required a {
+  color: #4a9eff;
+}
+
+/* Botón de eliminar */
+[data-theme="dark"] .comment-delete-btn {
+  color: #808080;
+}
+
+[data-theme="dark"] .comment-delete-btn:hover {
+  color: #ff6b6b;
+}
+
+/* Skeleton en modo oscuro */
+[data-theme="dark"] .pi-skeleton {
+  background: #1a1a1a;
+}
+
+[data-theme="dark"] .skel-thumb,
+[data-theme="dark"] .skel-main,
+[data-theme="dark"] .skel-line {
+  background: #2d2d2d;
+}
+
+[data-theme="dark"] .shimmer::after {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+}
+
+/* Productos relacionados */
+[data-theme="dark"] .related-card {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+[data-theme="dark"] .related-card:hover {
+  background: #3a3a3a;
+}
+
+[data-theme="dark"] .rel-name {
+  color: #e0e0e0;
 }
