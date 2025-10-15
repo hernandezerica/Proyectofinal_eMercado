@@ -1,20 +1,30 @@
-// Cargar información del producto
+// ============================================
+// 🎬 INICIO: Cuando la página carga
+// ============================================
 document.addEventListener("DOMContentLoaded", function() {
+  
+  // 👻 PASO 1: Referencias al skeleton (placeholders animados)
   let skeleton = document.getElementById('product-skeleton');
   let layout = document.getElementById('product-layout');
   if (typeof showSpinner === 'function') showSpinner();
 
+  // 🔑 PASO 2: Obtener ID del producto desde localStorage
   let prodID = localStorage.getItem("prodID");
   if (!prodID) {
-    window.location = "products.html";
+    window.location = "products.html"; // Si no hay ID, volver a productos
     return;
   }
 
-  let infoUrl = PRODUCT_INFO_URL + prodID + EXT_TYPE;
-  let commentsUrl = PRODUCT_INFO_COMMENTS_URL + prodID + EXT_TYPE;
+  // 🌐 PASO 3: Construir URLs de la API
+  let infoUrl = PRODUCT_INFO_URL + prodID + EXT_TYPE;         // Info del producto
+  let commentsUrl = PRODUCT_INFO_COMMENTS_URL + prodID + EXT_TYPE; // Comentarios
 
-  // Obtener datos del producto
+  // ============================================
+  // 📥 PASO 4: Fetch - Traer datos del producto
+  // ============================================
   getJSONData(infoUrl).then(function(infoResp) {
+    
+    // ❌ Si falla, mostrar error
     if (infoResp.status !== "ok") {
       simpleError();
       if (skeleton) skeleton.remove();
@@ -22,38 +32,40 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
     
-    let prod = infoResp.data;
+    let prod = infoResp.data; // Datos del producto
 
-    // Mostrar información básica
+    // ============================================
+    // 🎨 PASO 5: Renderizar información básica
+    // ============================================
     document.getElementById("product-name").textContent = prod.name || "Producto";
     document.getElementById("product-category").textContent = prod.category || "";
     document.getElementById("product-description").textContent = prod.description || "";
     document.getElementById("product-price").textContent = (prod.currency || "") + " " + (prod.cost || "");
     
-    let cuotaTexto = "Hasta 12 x ";
-    if (prod.cost) {
-      cuotaTexto = cuotaTexto + Math.round(prod.cost/12);
-    } else {
-      cuotaTexto = cuotaTexto + "-";
-    }
-    document.getElementById("installments-text").textContent = cuotaTexto;
 
-    renderImages(prod.images || []);
-    renderVariants(prod.images || []); 
-    renderRelated(prod.relatedProducts || []);
-    setupShare(prod);
+    // ============================================
+    // 🖼️ PASO 6: Renderizar componentes visuales
+    // ============================================
+    renderImages(prod.images || []);           // Galería de imágenes
+    renderVariants(prod.images || []);         // Variantes (máx 2)
+    renderRelated(prod.relatedProducts || []); // Productos relacionados
+    setupShare(prod);                          // Botones de compartir
 
-    // Control de cantidad
-    let qty = 1;
-    let MIN_Q = 1;
-    let MAX_Q = 99;
+    // ============================================
+    // 🔢 PASO 7: Sistema de cantidad (+ y -)
+    // ============================================
+    let qty = 1;       // Cantidad inicial
+    let MIN_Q = 1;     // Mínimo
+    let MAX_Q = 99;    // Máximo
     
+    // Actualiza el número y habilita/deshabilita botones
     function updateQty() {
       document.getElementById("qty-value").textContent = qty; 
-      document.getElementById("qty-minus").disabled = qty <= MIN_Q; 
-      document.getElementById("qty-plus").disabled = qty >= MAX_Q; 
+      document.getElementById("qty-minus").disabled = qty <= MIN_Q; // Deshabilita "-" si está en 1
+      document.getElementById("qty-plus").disabled = qty >= MAX_Q;  // Deshabilita "+" si está en 99
     }
     
+    // Botón MENOS: disminuye cantidad
     document.getElementById("qty-minus").onclick = function() {
       if (qty > MIN_Q) {
         qty--;
@@ -61,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     };
     
+    // Botón MÁS: aumenta cantidad
     document.getElementById("qty-plus").onclick = function() {
       if (qty < MAX_Q) {
         qty++;
@@ -68,77 +81,102 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     };
     
-    updateQty();
+    updateQty(); // Inicializar
 
+    // 🛒 Botón "Agregar al carrito"
     document.getElementById("add-to-cart").onclick = function() {
       alert("Agregado " + qty + " x " + prod.name);
+      // pronto para fetch o lo que sea...
     };
 
-    // Cargar comentarios de la API
+    // ============================================
+    // 💬 PASO 8: Fetch - Traer comentarios
+    // ============================================
     getJSONData(commentsUrl).then(function(commentsResp) {
       let apiComments = [];
       if (commentsResp.status === "ok") {
-        apiComments = commentsResp.data || [];
+        apiComments = commentsResp.data || []; // Comentarios de la API
       }
-      window.productCommentsFromAPI = apiComments;
-      renderComments(apiComments);
+      window.productCommentsFromAPI = apiComments; // Guardar globalmente
+      renderComments(apiComments);                 // Mostrar comentarios
 
-      // Finalizar carga
-      if (skeleton) skeleton.style.display = 'none';
-      if (layout) layout.hidden = false;
+      // ============================================
+      // ✅ PASO 9: Finalizar carga (ocultar skeleton)
+      // ============================================
+      if (skeleton) skeleton.style.display = 'none'; // Oculta placeholders
+      if (layout) layout.hidden = false;             // Muestra contenido real
       if (typeof hideSpinner === 'function') hideSpinner();
 
-      // Inicializar formulario de comentarios
+      // ============================================
+      // 📝 PASO 10: Inicializar formulario de comentarios
+      // ============================================
       setupCommentForm(renderComments);
     });
   });
 
-  // Mostrar galería de imágenes
+  // ============================================
+  // 🖼️ FUNCIÓN: Galería de imágenes con miniaturas
+  // ============================================
   function renderImages(images) {
     let thumbs = document.getElementById("thumbs");
     if (!thumbs) return;
-    thumbs.innerHTML = "";
+    thumbs.innerHTML = ""; // Limpiar
     
     let mainImage = document.getElementById("main-image");
+    
+    // Si no hay imágenes, mostrar placeholder
     if (!images.length) {
       if (mainImage) mainImage.src = placeholder();
       return;
     }
+    
+    // Crear una miniatura por cada imagen
     for (let i = 0; i < images.length; i++) {
       let src = images[i];
       let btn = document.createElement("button");
       btn.innerHTML = '<img src="' + src + '" alt="thumb ' + (i+1) + '">';
+      
+      // Primera imagen es la activa
       if (i === 0) {
         btn.classList.add("active");
         if (mainImage) mainImage.src = src;
       }
+      
+      // Al hacer click: cambia imagen principal
       btn.onclick = (function(srcCopy) {
         return function() {
-          if (mainImage) mainImage.src = srcCopy;
+          if (mainImage) mainImage.src = srcCopy;         // Cambia imagen grande
           let allButtons = thumbs.querySelectorAll("button");
           for (let j = 0; j < allButtons.length; j++) {
-            allButtons[j].classList.remove("active");
+            allButtons[j].classList.remove("active");      // Quita "active" de todas
           }
-          this.classList.add("active");
+          this.classList.add("active");                    // Marca esta como activa
         };
-      })(src);
+      })(src); // Closure para mantener la imagen correcta
+      
       thumbs.appendChild(btn);
     }
   }
 
-  // Mostrar variantes del producto
+  // ============================================
+  // 🎨 FUNCIÓN: Variantes del producto (máximo 2)
+  // ============================================
   function renderVariants(images) {
     let wrap = document.getElementById("variants");
     if (!wrap) return;
     wrap.innerHTML = "";
     if (!images.length) return;
-    let maxVariants = Math.min(2, images.length);
+    
+    let maxVariants = Math.min(2, images.length); // Solo mostrar 2 variantes
+    
     for (let i = 0; i < maxVariants; i++) {
       let src = images[i];
       let div = document.createElement("div");
       div.className = "variant-item";
-      if (i === 0) div.className = div.className + " active";
+      if (i === 0) div.className = div.className + " active"; // Primera activa
       div.innerHTML = '<img src="' + src + '" alt="var ' + (i+1) + '">';
+      
+      // Al hacer click: cambia imagen principal y marca como activa
       div.onclick = (function(srcCopy) {
         return function() {
           let allVariants = wrap.querySelectorAll('.variant-item');
@@ -150,105 +188,145 @@ document.addEventListener("DOMContentLoaded", function() {
           if (mainImage) mainImage.src = srcCopy;
         };
       })(src);
+      
       wrap.appendChild(div);
     }
   }
 
-  // Mostrar comentarios
+  // ============================================
+  // 💬 FUNCIÓN: Mostrar comentarios
+  // ============================================
   function renderComments(comments) {
     let list = document.getElementById("comments-list");
     if (!list) return;
     list.innerHTML = "";
+    
+    // Si no hay comentarios, mostrar mensaje
     if (!comments.length) { 
       list.innerHTML = '<div class="comment-item">Aún no hay comentarios.</div>'; 
       return; 
     }
+    
+    // Crear un div por cada comentario
     for (let i = 0; i < comments.length; i++) {
       let c = comments[i];
       let div = document.createElement("div");
       div.className = "comment-item";
+      
+      // Construir HTML con funciones auxiliares
       div.innerHTML = '<div class="comment-row"><div class="comment-user-stars"><span class="comment-user">' + 
-        esc(c.user) + '</span><span class="comment-stars">' + 
-        stars(c.score) + '</span></div><span class="comment-date"><i class="fa fa-clock-o"></i>' + 
-        formatDate(c.dateTime) + '</span></div><div class="comment-text">' + 
-        esc(c.description) + '</div>';
+        esc(c.user) +              // Escapar usuario (seguridad)
+        '</span><span class="comment-stars">' + 
+        stars(c.score) +           // Convertir número a estrellas ★★★☆☆
+        '</span></div><span class="comment-date"><i class="fa fa-clock-o"></i>' + 
+        formatDate(c.dateTime) +   // Formatear fecha: 25/02/2019
+        '</span></div><div class="comment-text">' + 
+        esc(c.description) +       // Escapar texto (previene XSS)
+        '</div>';
+      
       list.appendChild(div);
     }
   }
 
-  // Mostrar productos relacionados
+  // ============================================
+  // 🔗 FUNCIÓN: Mostrar productos relacionados
+  // ============================================
   function renderRelated(related) {
     let grid = document.getElementById("related-products"); 
     if (!grid) return;
     grid.innerHTML = "";
+    
+    // Si no hay productos, mostrar mensaje
     if (!related.length) { 
       grid.innerHTML = '<div class="text-muted">No hay productos relacionados.</div>'; 
       return; 
     }
+    
+    // Crear un card por cada producto
     for (let i = 0; i < related.length; i++) {
       let r = related[i];
       let card = document.createElement("div");
       card.className = "related-card";
       card.innerHTML = '<img src="' + r.image + '" alt="' + esc(r.name) + '"><div class="rel-name">' + esc(r.name) + '</div>';
+      
+      // Al hacer click: guarda el ID y redirige
       card.onclick = (function(idCopy) {
         return function() {
           try {
-            localStorage.setItem("prodID", String(idCopy));
+            localStorage.setItem("prodID", String(idCopy)); // Guardar nuevo ID
           } catch (e) {}
-          window.location = "product-info.html";
+          window.location = "product-info.html";            // Recargar página con nuevo producto
         };
       })(r.id);
+      
       grid.appendChild(card);
     }
   }
 
-  // Funciones auxiliares
+  // ============================================
+  // 🛠️ FUNCIONES AUXILIARES
+  // ============================================
+  
+  // ⭐ Convierte número a estrellas
+  // Ejemplo: stars(3) → "★★★☆☆"
   function stars(n) {
-    let s = Math.max(0, Math.min(5, Number(n) || 0));
+    let s = Math.max(0, Math.min(5, Number(n) || 0)); // Entre 0 y 5
     let estrellas = "";
+    
+    // Agregar estrellas llenas
     for (let i = 0; i < s; i++) {
       estrellas = estrellas + "★";
     }
+    // Agregar estrellas vacías
     for (let i = s; i < 5; i++) {
       estrellas = estrellas + "☆";
     }
     return estrellas;
   }
 
+  // 📅 Formatea fecha de "2019-02-25 18:03:52" a "25/02/2019"
   function formatDate(dt) {
     if (!dt) return "";
-    let parts = dt.split(" ")[0].split("-");
+    let parts = dt.split(" ")[0].split("-"); // ["2019", "02", "25"]
     if (parts.length === 3) {
-      return parts[2] + "/" + parts[1] + "/" + parts[0];
+      return parts[2] + "/" + parts[1] + "/" + parts[0]; // Día/Mes/Año
     }
     return dt;
   }
 
+  // 🛡️ Escapa caracteres HTML para prevenir ataques XSS
+  // Ejemplo: esc("<script>") → "&lt;script&gt;"
   function esc(str) {
     let texto = String(str || "");
-    texto = texto.replace(/&/g, "&amp;");
-    texto = texto.replace(/</g, "&lt;");
-    texto = texto.replace(/>/g, "&gt;");
-    texto = texto.replace(/"/g, "&quot;");
-    texto = texto.replace(/'/g, "&#39;");
+    texto = texto.replace(/&/g, "&amp;");   // & → &amp;
+    texto = texto.replace(/</g, "&lt;");    // < → &lt;
+    texto = texto.replace(/>/g, "&gt;");    // > → &gt;
+    texto = texto.replace(/"/g, "&quot;");  // " → &quot;
+    texto = texto.replace(/'/g, "&#39;");   // ' → &#39;
     return texto;
   }
 
+  // 🖼️ Imagen placeholder cuando no hay imagen
   function placeholder() {
     return "data:image/svg+xml;charset=utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450"><rect width="100%" height="100%" fill="#f0f0f0"/><text x="50%" y="50%" font-size="32" fill="#999" text-anchor="middle" dy=".3em">Sin imagen</text></svg>');
   }
 
+  // ❌ Muestra mensaje de error si falla la carga
   function simpleError() {
     document.querySelector("main").innerHTML = '<div class="alert alert-danger">No se pudo cargar el producto.</div>';
   }
 
-  // Configurar botones de compartir
+  // ============================================
+  // 📤 FUNCIÓN: Configurar botones de compartir
+  // ============================================
   function setupShare(prod) {
     let container = document.getElementById('share-icons-inline');
     if (!container) return;
-    let pageUrl = location.href.split('#')[0];
-    let text = encodeURIComponent(prod.name || 'Producto');
     
+    let pageUrl = location.href.split('#')[0];        // URL de la página
+    let text = encodeURIComponent(prod.name || 'Producto'); // Texto a compartir
+    
+    // Configurar redes sociales
     let shareLinks = [
       { name: 'WhatsApp', icon: 'fa-whatsapp', url: 'https://api.whatsapp.com/send?text=' + text + '%20' + encodeURIComponent(pageUrl) },
       { name: 'Facebook', icon: 'fa-facebook', url: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pageUrl) },
@@ -256,12 +334,13 @@ document.addEventListener("DOMContentLoaded", function() {
       { name: 'X', icon: 'fa-twitter', url: 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(pageUrl) + '&text=' + text }
     ];
     
+    // Crear botones
     container.innerHTML = '';
     for (let i = 0; i < shareLinks.length; i++) {
       let s = shareLinks[i];
       let a = document.createElement('a');
       a.href = s.url;
-      a.target = '_blank';
+      a.target = '_blank';  // Abrir en nueva pestaña
       a.rel = 'noopener';
       a.className = 'share-ico';
       a.title = s.name;
@@ -271,14 +350,24 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-// Sistema de comentarios con localStorage
+// ============================================
+// ============================================
+
+// ============================================
+// 📝 SISTEMA DE COMENTARIOS CON LOCALSTORAGE
+// ============================================
+// Esta función permite agregar, mostrar y eliminar comentarios
+// Los comentarios se guardan en localStorage por producto
+
 function setupCommentForm(renderComments) {
+  
+  // 👤 Verificar si el usuario está logueado
   let userData = JSON.parse(localStorage.getItem("Datos de usuario"));
   let form = document.getElementById("formComentario");
   let textArea = document.getElementById("texto");
   let commentsList = document.getElementById("comments-list");
 
-  // Si el usuario no está logueado, mostrar mensaje
+  // 🚫 Si NO está logueado, mostrar mensaje
   if (!userData) {
     let wrapper = document.querySelector(".add-comment-section");
     if (wrapper) {
@@ -287,80 +376,93 @@ function setupCommentForm(renderComments) {
     return;
   }
 
+  // ✅ Usuario logueado: cargar comentarios guardados
   cargarYMostrarComentarios();
 
-  // Cuando se envía el formulario
+  // ============================================
+  // 📤 Evento: Cuando se envía el formulario
+  // ============================================
   if (form) {
     form.onsubmit = function(e) {
-      e.preventDefault();
+      e.preventDefault(); // Evita que recargue la página
+      
       let texto = textArea.value.trim();
       let ratingInput = document.querySelector('input[name="rating"]:checked');
 
+      // Validar que haya texto
       if (!texto) {
         alert("Por favor escribe un comentario.");
         textArea.focus();
         return;
       }
+      
+      // Validar que haya calificación
       if (!ratingInput) {
         alert("Por favor selecciona una calificación con estrellas.");
         return;
       }
 
-      // Crear el nuevo comentario
+      // ✨ Crear el nuevo comentario
       let nuevoComentario = {
-        user: userData.email,
-        description: texto,
-        dateTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        score: parseInt(ratingInput.value)
+        user: userData.email,                                           // Email del usuario
+        description: texto,                                             // Texto del comentario
+        dateTime: new Date().toISOString().slice(0, 19).replace('T', ' '), // Fecha actual
+        score: parseInt(ratingInput.value)                              // Estrellas (1-5)
       };
 
+      // 💾 Guardar en localStorage
       let prodID = localStorage.getItem("prodID");
-      let storageKey = "comments-" + prodID;
+      let storageKey = "comments-" + prodID;                            // Clave: "comments-50921"
       let comentariosLocales = JSON.parse(localStorage.getItem(storageKey)) || [];
-      comentariosLocales.push(nuevoComentario);
+      comentariosLocales.push(nuevoComentario);                         // Agregar nuevo comentario
       localStorage.setItem(storageKey, JSON.stringify(comentariosLocales));
 
-      // Limpiar el formulario
+      // 🧹 Limpiar el formulario
       form.reset();
       let ratings = document.querySelectorAll('input[name="rating"]');
       for (let i = 0; i < ratings.length; i++) {
         ratings[i].checked = false;
       }
+      
+      // ✨ Animación de envío
       textArea.classList.add('comment-sent-animation');
       setTimeout(function() {
         textArea.classList.remove('comment-sent-animation');
       }, 600);
 
+      // 🔄 Actualizar lista de comentarios
       cargarYMostrarComentarios();
 
-      // Resaltar el nuevo comentario
+      // 🎯 Resaltar el nuevo comentario con animación
       setTimeout(function() {
         let lastComment = commentsList.lastElementChild;
         if (lastComment) {
           lastComment.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          lastComment.style.background = '#e8f4fd';
+          lastComment.style.background = '#e8f4fd';  // Color azul claro
           setTimeout(function() {
-            lastComment.style.background = '';
+            lastComment.style.background = '';       // Volver a normal
           }, 2000);
         }
       }, 100);
     };
   }
 
-  // Mostrar todos los comentarios (API + localStorage)
+  // ============================================
+  // 📋 FUNCIÓN: Mostrar todos los comentarios (API + localStorage)
+  // ============================================
   function cargarYMostrarComentarios() {
     if (!commentsList) return;
     
-    // Obtener comentarios
-    let apiComments = window.productCommentsFromAPI || [];
+    // 📥 Obtener comentarios de dos fuentes:
+    let apiComments = window.productCommentsFromAPI || [];           // 1. De la API
     let prodID = localStorage.getItem("prodID");
     let storageKey = "comments-" + prodID;
-    let localComments = JSON.parse(localStorage.getItem(storageKey)) || [];
+    let localComments = JSON.parse(localStorage.getItem(storageKey)) || []; // 2. Del navegador
     
-    // Limpiar lista
+    // 🧹 Limpiar lista
     commentsList.innerHTML = "";
     
-    // Si no hay comentarios
+    // Si no hay comentarios, mostrar mensaje
     if (apiComments.length === 0 && localComments.length === 0) {
       let emptyDiv = document.createElement("div");
       emptyDiv.className = "comment-item";
@@ -369,38 +471,42 @@ function setupCommentForm(renderComments) {
       return;
     }
     
-    // Mostrar comentarios de la API
+    // 📝 Mostrar comentarios de la API (no se pueden eliminar)
     for (let i = 0; i < apiComments.length; i++) {
       let comentario = crearComentario(apiComments[i], false, -1);
       commentsList.appendChild(comentario);
     }
     
-    // Mostrar comentarios guardados localmente
+    // 📝 Mostrar comentarios locales (se pueden eliminar)
     for (let i = 0; i < localComments.length; i++) {
       let comentario = crearComentario(localComments[i], true, i);
       commentsList.appendChild(comentario);
     }
   }
   
-  // Crear un comentario en HTML
+  // ============================================
+  // 🎨 FUNCIÓN: Crear un comentario en HTML
+  // ============================================
   function crearComentario(c, puedeEliminar, index) {
     let div = document.createElement("div");
     div.className = "comment-item";
     
+    // Fila superior: usuario, estrellas, fecha
     let row = document.createElement("div");
     row.className = "comment-row";
     
     let userStars = document.createElement("div");
     userStars.className = "comment-user-stars";
     
+    // 👤 Nombre de usuario
     let user = document.createElement("span");
     user.className = "comment-user";
     user.textContent = c.user || "";
     
+    // ⭐ Estrellas
     let starsSpan = document.createElement("span");
     starsSpan.className = "comment-stars";
     let score = Math.max(0, Math.min(5, Number(c.score) || 0));
-    // Crear estrellas
     let estrellas = "";
     for (let i = 0; i < score; i++) {
       estrellas = estrellas + "★";
@@ -413,6 +519,7 @@ function setupCommentForm(renderComments) {
     userStars.appendChild(user);
     userStars.appendChild(starsSpan);
     
+    // 📅 Fecha
     let dateSpan = document.createElement("span");
     dateSpan.className = "comment-date";
     let icon = document.createElement("i");
@@ -423,7 +530,7 @@ function setupCommentForm(renderComments) {
     if (c.dateTime) {
       let parts = c.dateTime.split(" ")[0].split("-");
       if (parts.length === 3) {
-        dateText = parts[2] + "/" + parts[1] + "/" + parts[0];
+        dateText = parts[2] + "/" + parts[1] + "/" + parts[0]; // Formato: DD/MM/YYYY
       } else {
         dateText = c.dateTime;
       }
@@ -433,7 +540,7 @@ function setupCommentForm(renderComments) {
     row.appendChild(userStars);
     row.appendChild(dateSpan);
     
-    // Botón eliminar (solo si es del usuario actual)
+    // 🗑️ Botón eliminar (solo si es del usuario actual)
     if (puedeEliminar && userData && c.user === userData.email) {
       let deleteBtn = document.createElement("button");
       deleteBtn.className = "comment-delete-btn";
@@ -449,6 +556,7 @@ function setupCommentForm(renderComments) {
       row.appendChild(deleteBtn);
     }
     
+    // 💬 Texto del comentario
     let text = document.createElement("div");
     text.className = "comment-text";
     text.textContent = c.description || "";
@@ -459,20 +567,26 @@ function setupCommentForm(renderComments) {
     return div;
   }
   
-  // Eliminar un comentario
+  // ============================================
+  // 🗑️ FUNCIÓN: Eliminar un comentario
+  // ============================================
   function eliminarComentario(index) {
     let prodID = localStorage.getItem("prodID");
     let storageKey = "comments-" + prodID;
     let comentariosLocales = JSON.parse(localStorage.getItem(storageKey)) || [];
     
-    // Quitar el comentario
+    // ✂️ Quitar el comentario del array
     comentariosLocales.splice(index, 1);
     
-    // Guardar
+    // 💾 Guardar en localStorage
     localStorage.setItem(storageKey, JSON.stringify(comentariosLocales));
     
-    // Actualizar
+    // 🔄 Actualizar la vista
     cargarYMostrarComentarios();
   }
 }
+
+// ============================================
+// FIN DEL CÓDIGO
+// ============================================
    
