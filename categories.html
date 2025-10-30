@@ -9,9 +9,26 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons para el ícono del carrito -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link href="css/styles.css" rel="stylesheet">
   <link href="css/theme.css" rel="stylesheet">
   <script src="js/theme.js"></script>
+  <style>
+    /* Ajuste para el badge del carrito en el navbar */
+    #cart-badge {
+      font-size: 0.6rem;
+      min-width: 16px;
+      height: 16px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 5px !important;
+      left: 50% !important;
+      transform: translate(0%, -50%) !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -31,6 +48,15 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
+          </li>
+          <!-- ¡DESAFIATE! - Autor: ericahernandez -->
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="cart.html">
+              <i class="bi bi-cart3"></i>
+              <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                0
+              </span>
+            </a>
           </li>
           <li class="nav-item">
           </li>
