@@ -58,13 +58,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function saveUserSession() {
-        const userData = {
-            email: emailInput.value.trim(),
+        const data = {
+            name: emailInput.value.trim(),
             loginTime: new Date().toISOString(),
             isLoggedIn: true
         };
         
-        localStorage.setItem("Datos de usuario", JSON.stringify(userData));
+        localStorage.setItem("userData", JSON.stringify(data));
         localStorage.setItem("isLoggedIn", "true");
     }
 
