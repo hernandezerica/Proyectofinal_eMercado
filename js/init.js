@@ -39,3 +39,41 @@ let getJSONData = function(url){
         return result;
     });
 }
+
+// ============================================
+// ¡DESAFIATE! - Autor: Máximo Gallo
+// Función global que actualiza el badge del carrito en todas las páginas
+// Muestra la cantidad total de productos
+// ============================================
+function actualizarBadgeCarrito() {
+  // Obtener productos del carrito
+  let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  
+  // Calcular cantidad total de productos
+  let totalProductos = 0;
+  cartItems.forEach(function(producto) {
+    totalProductos += producto.quantity;
+  });
+  
+  // Obtener el elemento del badge
+  let badge = document.getElementById('cart-badge');
+  
+  if (badge) {
+    if (totalProductos > 0) {
+      // Si hay productos, mostrar el badge con la cantidad
+      badge.textContent = totalProductos;
+      badge.style.display = 'inline-block';
+    } else {
+      // Si no hay productos, ocultar el badge
+      badge.style.display = 'none';
+    }
+  }
+}
+
+// ============================================
+// ¡DESAFIATE! - Autor: Máximo Gallo
+// Actualizar badge del carrito al cargar cualquier página
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+  actualizarBadgeCarrito();
+});
