@@ -49,9 +49,12 @@
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
           <!-- ericahernandez - Con este li mostramos el usuario -->
-        <li class="nav-item">
-          <a class="nav-link" id="userName" href="my-profile.html"></a>
-        </li>
+        <li class="nav-item d-flex align-items-center">
+          <a href="my-profile.html" class="d-flex align-items-center text-decoration-none">
+            <span id="navUserName" class="text-white me-2"></span>
+            <img id="navProfileImage" src="img/default-avatar.png" alt="Foto de perfil" class="rounded-circle border border-light" width="40" height="40">
+          </a>
+</li>
         <!-- Toggle de tema claro/oscuro -->
         <li class="nav-item">
           <div class="theme-toggle-wrapper nav-link">
@@ -118,6 +121,8 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/index.js"></script>
   <script src="js/init.js"></script>
+  <script src="js/img.js"></script>
+  <script src="js/navbar.js"></script>
 </body>
 
 </html>

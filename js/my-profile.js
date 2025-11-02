@@ -30,6 +30,8 @@ document.getElementById("userForm").addEventListener("submit", e => {
     photo: JSON.parse(localStorage.getItem("userData"))?.photo || ""
   };
   localStorage.setItem("userData", JSON.stringify(data));
+  localStorage.setItem("profileImage", data.photo || ""); // opcional, para compatibilidad
+  localStorage.setItem("userName", data.name || ""); // para mostrar el nombre en el navbar
   alert("✅ Datos guardados correctamente");
 });
 
