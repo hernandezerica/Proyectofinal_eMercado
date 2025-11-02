@@ -16,13 +16,13 @@ document.addEventListener("DOMContentLoaded", function(){
 // ericahernandez - Mostrar el nombre del usuario en el index
 document.addEventListener("DOMContentLoaded", function () { 
   const isLoggedIn = localStorage.getItem("isLoggedIn"); // Verificar si hay sesión activa
-  const data = localStorage.getItem("userData"); // Obtener datos del usuario
+  const userData = localStorage.getItem("Datos de usuario"); // Obtener datos del usuario
 
-  if (isLoggedIn === "true" && data) { // Si hay sesión activa
-    const user = JSON.parse(data); 
+  if (isLoggedIn === "true" && userData) { // Si hay sesión activa
+    const user = JSON.parse(userData); 
     const userNameElement = document.getElementById("userName"); 
     if (userNameElement) {
-      userNameElement.textContent = user.name;// Mostrar el nombre del usuario
+      userNameElement.textContent = user.email;// Mostrar el email del usuario
     }
   } else {
     // Si no hay sesión activa → redirigimos a login
