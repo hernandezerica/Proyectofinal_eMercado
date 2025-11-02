@@ -126,19 +126,24 @@ input:checked + .theme-slider:before {
   transform: translateX(24px);
 }
 
-/* Iconos del toggle */
+/* Iconos del toggle con Bootstrap Icons */
 .theme-slider:after {
-  content: "☀️";
+  font-family: 'bootstrap-icons';
+  content: "\F5A2"; /* bi-sun-fill */
   position: absolute;
-  right: 6px;
-  top: 2px;
-  font-size: 14px;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #fff;
+  line-height: 1;
 }
 
 input:checked + .theme-slider:after {
-  content: "🌙";
+  content: "\F497"; /* bi-moon-stars-fill */
   right: auto;
-  left: 6px;
+  left: 5px;
+  color: #ffd700;
 }
 
 /* Ajustes para elementos específicos */
@@ -494,4 +499,210 @@ input:checked + .theme-slider:after {
   background-color: #1a3d5c;
   color: #6bb6ff;
   border-color: #084298;
+}
+
+/* ============================================ */
+/* REGLAS GLOBALES PARA MODO OSCURO */
+/* Autor: Máximo Gallo */
+/* Asegura que TODOS los textos sean blancos */
+/* ============================================ */
+
+/* Textos generales */
+[data-theme="dark"] * {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: #f0f0f0 !important;
+}
+
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] div,
+[data-theme="dark"] label,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] li,
+[data-theme="dark"] a {
+  color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] small,
+[data-theme="dark"] .small {
+  color: #b0b0b0 !important;
+}
+
+/* Excepciones - Elementos que deben mantener su color */
+[data-theme="dark"] .btn,
+[data-theme="dark"] .btn *,
+[data-theme="dark"] .badge,
+[data-theme="dark"] .badge * {
+  color: inherit !important;
+}
+
+/* Links hover */
+[data-theme="dark"] a:hover {
+  color: #4fc3f7 !important;
+}
+
+/* Navbar */
+[data-theme="dark"] .navbar,
+[data-theme="dark"] .navbar * {
+  color: #e0e0e0 !important;
+}
+
+/* Footer */
+[data-theme="dark"] footer,
+[data-theme="dark"] footer * {
+  color: #b0b0b0 !important;
+}
+
+/* Cards */
+[data-theme="dark"] .card-title {
+  color: #f0f0f0 !important;
+}
+
+[data-theme="dark"] .card-text {
+  color: #d0d0d0 !important;
+}
+
+/* Forms */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  color: #e0e0e0 !important;
+  background-color: var(--bg-card) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: #808080 !important;
+}
+
+/* Tablas */
+[data-theme="dark"] table,
+[data-theme="dark"] table * {
+  color: #e0e0e0 !important;
+}
+
+/* Listas */
+[data-theme="dark"] .list-group-item,
+[data-theme="dark"] .list-group-item * {
+  color: #e0e0e0 !important;
+}
+
+/* Modales específicos del proyecto */
+[data-theme="dark"] .modal-container * {
+  color: initial !important;
+}
+
+[data-theme="dark"] .modal-title {
+  color: #f0f0f0 !important;
+}
+
+[data-theme="dark"] .modal-message {
+  color: #b0b0b0 !important;
+}
+
+/* ============================================ */
+/* COMPATIBILIDAD CON .dark-mode */
+/* Para componentes que usan body.dark-mode */
+/* ============================================ */
+
+/* Duplicar todas las reglas para .dark-mode */
+body.dark-mode * {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+  color: #f0f0f0 !important;
+}
+
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode div,
+body.dark-mode label,
+body.dark-mode td,
+body.dark-mode th,
+body.dark-mode li,
+body.dark-mode a {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode small,
+body.dark-mode .small {
+  color: #b0b0b0 !important;
+}
+
+/* Excepciones - Elementos que deben mantener su color */
+body.dark-mode .btn,
+body.dark-mode .btn *,
+body.dark-mode .badge,
+body.dark-mode .badge * {
+  color: inherit !important;
+}
+
+body.dark-mode a:hover {
+  color: #4fc3f7 !important;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .navbar * {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode footer,
+body.dark-mode footer * {
+  color: #b0b0b0 !important;
+}
+
+body.dark-mode .card {
+  background-color: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
+body.dark-mode .card-title {
+  color: #f0f0f0 !important;
+}
+
+body.dark-mode .card-text {
+  color: #d0d0d0 !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  color: #e0e0e0 !important;
+  background-color: #2a2a2a !important;
+  border-color: #4a4a4a !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #808080 !important;
+}
+
+body.dark-mode table,
+body.dark-mode table * {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .list-group-item {
+  background-color: #2a2a2a;
+  color: #e0e0e0 !important;
+  border-color: #3a3a3a;
+}
+
+body.dark-mode .list-group-item * {
+  color: #e0e0e0 !important;
 }
