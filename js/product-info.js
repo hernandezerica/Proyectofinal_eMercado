@@ -3,87 +3,6 @@
 // ============================================
 document.addEventListener("DOMContentLoaded", function() {
   
-  // ¡DESAFIATE! - Autor: Máximo Gallo - Actualizar badge del carrito al cargar la página
-  actualizarBadgeCarrito();
-
-  // ============================================
-  // MODAL REUTILIZABLE - Autor: Máximo Gallo
-  // Función para mostrar modal de confirmación/información
-  // ============================================
-  /**
-   * Muestra un modal personalizado
-   * @param {string} title - Título del modal
-   * @param {string} message - Mensaje a mostrar
-   * @param {string} type - Tipo: 'success', 'warning', 'danger', 'info'
-   * @param {function} onConfirm - Función callback al confirmar (opcional)
-   * @param {boolean} showCancel - Mostrar botón cancelar (default: true)
-   */
-  window.mostrarModal = function(title, message, type, onConfirm, showCancel = true) {
-    let overlay = document.getElementById('modal-overlay');
-    let modalTitle = document.getElementById('modal-title');
-    let modalMessage = document.getElementById('modal-message');
-    let modalIcon = document.getElementById('modal-icon');
-    let confirmBtn = document.getElementById('modal-confirm');
-    let cancelBtn = document.getElementById('modal-cancel');
-
-    // Configurar contenido
-    modalTitle.textContent = title;
-    modalMessage.textContent = message;
-
-    // Configurar icono según tipo
-    modalIcon.className = 'modal-icon ' + type;
-    let iconClass = {
-      'success': 'fa fa-check',
-      'warning': 'fa fa-exclamation-triangle',
-      'danger': 'fa fa-trash',
-      'info': 'fa fa-info-circle'
-    };
-    modalIcon.innerHTML = '<i class="' + (iconClass[type] || 'fa fa-info') + '"></i>';
-
-    // Configurar botón de confirmar según tipo
-    confirmBtn.className = 'modal-btn';
-    if (type === 'success' || type === 'info') {
-      confirmBtn.classList.add('modal-btn-primary');
-      confirmBtn.textContent = 'Aceptar';
-    } else if (type === 'danger') {
-      confirmBtn.classList.add('modal-btn-confirm');
-      confirmBtn.textContent = 'Eliminar';
-    } else {
-      confirmBtn.classList.add('modal-btn-success');
-      confirmBtn.textContent = 'Confirmar';
-    }
-
-    // Mostrar/ocultar botón cancelar
-    if (showCancel) {
-      cancelBtn.style.display = 'block';
-    } else {
-      cancelBtn.style.display = 'none';
-    }
-
-    // Mostrar modal
-    overlay.classList.add('active');
-
-    // Evento: Confirmar
-    confirmBtn.onclick = function() {
-      overlay.classList.remove('active');
-      if (onConfirm && typeof onConfirm === 'function') {
-        onConfirm();
-      }
-    };
-
-    // Evento: Cancelar
-    cancelBtn.onclick = function() {
-      overlay.classList.remove('active');
-    };
-
-    // Evento: Click fuera del modal
-    overlay.onclick = function(e) {
-      if (e.target === overlay) {
-        overlay.classList.remove('active');
-      }
-    };
-  };
-  
   // 👻 PASO 1: Referencias al skeleton (placeholders animados)
   let skeleton = document.getElementById('product-skeleton');
   let layout = document.getElementById('product-layout');
@@ -164,69 +83,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     updateQty(); // Inicializar
 
-    // ============================================
-    // ENTREGA 2 - Autor: Máximo Gallo
-    // Función para agregar producto al carrito en localStorage
-    // ============================================
-    function agregarAlCarrito(navigateToCart) {
-      // Crear objeto con la información del producto
-      let productoCarrito = {
-        id: prodID,
-        name: prod.name,
-        description: prod.description || '',
-        cost: prod.cost,
-        currency: prod.currency,
-        quantity: qty,
-        image: prod.images && prod.images.length > 0 ? prod.images[0] : 'img/prod_generic.jpg'
-      };
-      
-      // Obtener carrito actual del localStorage (o array vacío si no existe)
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      
-      // ¡DESAFIATE! - Verificar si el producto ya existe en el carrito
-      let productoExistente = cart.find(item => item.id === prodID);
-      
-      let mensaje = '';
-      if (productoExistente) {
-        // Si existe, solo aumentar la cantidad
-        productoExistente.quantity += qty;
-        mensaje = 'Se agregaron ' + qty + ' unidades más de "' + prod.name + '" al carrito.\n\nCantidad total: ' + productoExistente.quantity + ' unidades';
-      } else {
-        // Si no existe, agregar el nuevo producto
-        cart.push(productoCarrito);
-        mensaje = qty + ' x "' + prod.name + '" se agregó correctamente al carrito.';
-      }
-      
-      // Guardar el carrito actualizado en localStorage
-      localStorage.setItem('cart', JSON.stringify(cart));
-      
-      // Actualizar badge del carrito
-      actualizarBadgeCarrito();
-      
-      // Si navigateToCart es true, redirigir al carrito inmediatamente
-      if (navigateToCart) {
-        window.location.href = 'cart.html';
-      } else {
-        // Mostrar modal de confirmación solo si no se navega al carrito
-        mostrarModal(
-          '¡Producto agregado!',
-          mensaje,
-          'success',
-          null,
-          false // No mostrar botón cancelar
-        );
-      }
-    }
-
-    // 🛒 ENTREGA 2 - Autor: Máximo Gallo - Botón "Agregar al carrito"
+    // 🛒 Botón "Agregar al carrito"
     document.getElementById("add-to-cart").onclick = function() {
-      agregarAlCarrito(false); // No navegar al carrito
-    };
-
-    // 🛒 ENTREGA 2 - Autor: Máximo Gallo - Botón "Comprar"
-    // Agrega al carrito y navega a cart.html
-    document.getElementById("buy-now").onclick = function() {
-      agregarAlCarrito(true); // Navegar al carrito
+      alert("Agregado " + qty + " x " + prod.name);
+      // pronto para fetch o lo que sea...
     };
 
     // ============================================
@@ -723,36 +583,6 @@ function setupCommentForm(renderComments) {
     
     // 🔄 Actualizar la vista
     cargarYMostrarComentarios();
-  }
-}
-
-// ============================================
-// ¡DESAFIATE! - Autor: Máximo Gallo
-// Función que actualiza el badge del carrito en el navbar
-// Muestra la cantidad total de productos
-// ============================================
-function actualizarBadgeCarrito() {
-  // Obtener productos del carrito
-  let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-  
-  // Calcular cantidad total de productos
-  let totalProductos = 0;
-  cartItems.forEach(function(producto) {
-    totalProductos += producto.quantity;
-  });
-  
-  // Obtener el elemento del badge
-  let badge = document.getElementById('cart-badge');
-  
-  if (badge) {
-    if (totalProductos > 0) {
-      // Si hay productos, mostrar el badge con la cantidad
-      badge.textContent = totalProductos;
-      badge.style.display = 'inline-block';
-    } else {
-      // Si no hay productos, ocultar el badge
-      badge.style.display = 'none';
-    }
   }
 }
 
