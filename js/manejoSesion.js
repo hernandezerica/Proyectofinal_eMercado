@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
-    const userData = localStorage.getItem("Datos de usuario");
+    const userData = localStorage.getItem("userData"); // Corregido: ahora usa "userData" en lugar de "Datos de usuario"
     const header = document.querySelector(".container");
 
 
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // cerrar sesión.
     function logout() {
         localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("Datos de usuario");
+        localStorage.removeItem("userData"); // Corregido: ahora usa "userData"
         window.location.href = "login.html";
     }
 

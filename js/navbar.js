@@ -10,7 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if (userData.photo) {
       navImage.src = userData.photo;
     } else {
-      navImage.src = "img/default-avatar.png";
+      navImage.src = "img/userProfile.webp";
     }
   }
 

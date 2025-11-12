@@ -59,7 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function saveUserSession() {
         const data = {
-            name: emailInput.value.trim(),
+            email: emailInput.value.trim(), // Cambiado de 'name' a 'email' para consistencia
+            name: emailInput.value.trim(),  // También mantener 'name' para compatibilidad
             loginTime: new Date().toISOString(),
             isLoggedIn: true
         };

@@ -502,7 +502,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function setupCommentForm(renderComments) {
   
   // 👤 Verificar si el usuario está logueado
-  let userData = JSON.parse(localStorage.getItem("Datos de usuario"));
+  let userData = JSON.parse(localStorage.getItem("userData")); // Corregido: usa "userData"
   let form = document.getElementById("formComentario");
   let textArea = document.getElementById("texto");
   let commentsList = document.getElementById("comments-list");

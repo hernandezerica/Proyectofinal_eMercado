@@ -12,706 +12,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link href="css/styles.css" rel="stylesheet">
   <link href="css/theme.css" rel="stylesheet">
+  <link href="css/cart.css" rel="stylesheet">
   <script src="js/theme.js"></script>
-  <style>
-    /* Estilos personalizados para el carrito de compras */
-    
-    /* Contenedor principal del carrito */
-    .cart-container {
-      display: flex;
-      gap: 30px;
-      padding: 40px 0;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Columna izquierda - Lista de productos */
-    .cart-items {
-      flex: 1;
-    }
-
-    .cart-title {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 30px;
-      color: #333;
-    }
-
-    /* Tarjeta de cada producto */
-    .cart-item {
-      display: flex;
-      gap: 20px;
-      padding: 20px;
-      margin-bottom: 20px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      position: relative;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    /* Imagen del producto */
-    .cart-item-image {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      flex-shrink: 0;
-    }
-
-    /* Información del producto */
-    .cart-item-details {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .cart-item-name {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #333;
-    }
-
-    .cart-item-description {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 15px;
-      line-height: 1.4;
-    }
-
-    /* ENTREGA 1 - Precio unitario del producto */
-    .cart-item-price {
-      font-size: 15px;
-      color: #333;
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
-
-    /* ENTREGA 4 - Subtotal calculado (costo * cantidad) */
-    .cart-item-subtotal {
-      font-size: 16px;
-      color: #333;
-      margin-bottom: 15px;
-    }
-
-    .cart-item-subtotal strong {
-      color: #000;
-    }
-
-    /* Controles de cantidad */
-    .quantity-controls {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .quantity-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: none;
-      background: #e0e0e0;
-      color: #666;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .quantity-btn:hover {
-      background: #d0d0d0;
-    }
-
-    /* ENTREGA 1 - Campo de cantidad editable */
-    .quantity-number {
-      font-size: 16px;
-      font-weight: 500;
-      min-width: 50px;
-      text-align: center;
-      border: 1px solid #e0e0e0;
-      border-radius: 5px;
-      padding: 5px 10px;
-    }
-
-    /* Eliminar flechas del input number en Chrome, Safari, Edge */
-    .quantity-number::-webkit-outer-spin-button,
-    .quantity-number::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    /* Eliminar flechas del input number en Firefox */
-    .quantity-number[type=number] {
-      -moz-appearance: textfield;
-    }
-
-    /* Botón eliminar producto */
-    .remove-item {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: none;
-      border: none;
-      font-size: 24px;
-      color: #999;
-      cursor: pointer;
-      padding: 5px;
-      line-height: 1;
-    }
-
-    .remove-item:hover {
-      color: #333;
-    }
-
-    /* Columna derecha - Resumen */
-    .cart-summary {
-      width: 350px;
-      flex-shrink: 0;
-    }
-
-    .summary-card {
-      background: white;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 20px;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .summary-title {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    /* Líneas del resumen */
-    .summary-line {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 15px;
-      color: #666;
-      font-size: 15px;
-    }
-
-    .summary-line .amount {
-      font-weight: 600;
-      color: #333;
-    }
-
-    .summary-total {
-      display: flex;
-      justify-content: space-between;
-      padding-top: 15px;
-      margin-top: 15px;
-      border-top: 1px solid #e0e0e0;
-      font-size: 18px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .summary-total .amount {
-      color: #007bff;
-    }
-
-    /* Botones de acción */
-    .checkout-btn {
-      width: 100%;
-      padding: 15px;
-      background: #333;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: all 0.3s ease;
-    }
-
-    .checkout-btn:hover {
-      background: #222;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    .continue-shopping {
-      width: 100%;
-      padding: 15px;
-      background: white;
-      color: #333;
-      border: 1px solid #333;
-      border-radius: 25px;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: all 0.3s ease;
-    }
-
-    .continue-shopping:hover {
-      background: #f5f5f5;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    /* Nota de envío */
-    .shipping-note {
-      font-size: 13px;
-      color: #999;
-      margin-top: 15px;
-      line-height: 1.4;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .cart-container {
-        flex-direction: column;
-      }
-
-      .cart-summary {
-        width: 100%;
-      }
-
-      .cart-item {
-        flex-direction: column;
-      }
-
-      .cart-item-image {
-        width: 100%;
-        height: 200px;
-      }
-    }
-
-    /* ENTREGA 3 - Autor: Máximo Gallo */
-    /* Estilos para el mensaje de carrito vacío */
-    .empty-cart {
-      text-align: center;
-      padding: 60px 20px;
-      color: #666;
-    }
-
-    .empty-cart p {
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-
-    .empty-cart .btn {
-      padding: 12px 30px;
-      border-radius: 25px;
-    }
-
-    /* Ajuste para el badge del carrito en el navbar */
-    #cart-badge {
-      font-size: 0.6rem;
-      min-width: 16px;
-      height: 16px;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      top: 5px !important;
-      left: 50% !important;
-      transform: translate(0%, -50%) !important;
-    }
-
-    /* ============================================ */
-    /* MODAL DE CONFIRMACIÓN - Autor: Máximo Gallo */
-    /* Modal reutilizable para confirmar acciones */
-    /* ============================================ */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 9998;
-      animation: fadeIn 0.2s ease;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-container {
-      background: white;
-      border-radius: 12px;
-      padding: 30px;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      animation: slideUp 0.3s ease;
-      position: relative;
-      z-index: 9999;
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .modal-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-
-    .modal-icon.warning {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .modal-icon.danger {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    .modal-icon.success {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    .modal-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #333;
-      margin: 0;
-    }
-
-    .modal-message {
-      color: #666;
-      font-size: 15px;
-      line-height: 1.5;
-      margin-bottom: 25px;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-
-    .modal-btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .modal-btn-cancel {
-      background: #f5f5f5;
-      color: #666;
-    }
-
-    .modal-btn-cancel:hover {
-      background: #e0e0e0;
-    }
-
-    .modal-btn-confirm {
-      background: #dc3545;
-      color: white;
-    }
-
-    .modal-btn-confirm:hover {
-      background: #c82333;
-    }
-
-    .modal-btn-primary {
-      background: #007bff;
-      color: white;
-    }
-
-    .modal-btn-primary:hover {
-      background: #0056b3;
-    }
-
-    /* Animaciones del modal */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes slideUp {
-      from {
-        transform: translateY(50px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    /* ============================================ */
-    /* MODO OSCURO - Autor: Máximo Gallo */
-    /* Estilos mejorados para tema oscuro */
-    /* ============================================ */
-    
-    /* Fondo general */
-    body.dark-mode,
-    [data-theme="dark"] body {
-      background-color: #1a1a1a !important;
-    }
-
-    /* Título del carrito */
-    body.dark-mode .cart-title,
-    [data-theme="dark"] .cart-title {
-      color: #f0f0f0 !important;
-    }
-
-    /* ========== TARJETAS DE PRODUCTOS ========== */
-    body.dark-mode .cart-item,
-    [data-theme="dark"] .cart-item {
-      background: #2a2a2a !important;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
-      border: 1px solid #3a3a3a !important;
-    }
-
-    body.dark-mode .cart-item:hover,
-    [data-theme="dark"] .cart-item:hover {
-      border-color: #4a4a4a !important;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4) !important;
-    }
-
-    /* Imagen del producto */
-    body.dark-mode .cart-item-image,
-    [data-theme="dark"] .cart-item-image {
-      border: 1px solid #3a3a3a !important;
-    }
-
-    /* Textos del producto */
-    body.dark-mode .cart-item-name,
-    [data-theme="dark"] .cart-item-name {
-      color: #f0f0f0 !important;
-    }
-
-    body.dark-mode .cart-item-description,
-    [data-theme="dark"] .cart-item-description {
-      color: #b0b0b0 !important;
-    }
-
-    body.dark-mode .cart-item-price,
-    [data-theme="dark"] .cart-item-price {
-      color: #e0e0e0 !important;
-    }
-
-    body.dark-mode .cart-item-subtotal,
-    [data-theme="dark"] .cart-item-subtotal {
-      color: #e0e0e0 !important;
-    }
-
-    body.dark-mode .cart-item-subtotal strong,
-    [data-theme="dark"] .cart-item-subtotal strong {
-      color: #4fc3f7 !important;
-    }
-
-    /* ========== CONTROLES DE CANTIDAD ========== */
-    body.dark-mode .quantity-btn,
-    [data-theme="dark"] .quantity-btn {
-      background: #3a3a3a !important;
-      color: #e0e0e0 !important;
-      border: 1px solid #4a4a4a !important;
-    }
-
-    body.dark-mode .quantity-btn:hover,
-    [data-theme="dark"] .quantity-btn:hover {
-      background: #4a4a4a !important;
-      border-color: #5a5a5a !important;
-    }
-
-    body.dark-mode .quantity-number,
-    [data-theme="dark"] .quantity-number {
-      background: #2a2a2a !important;
-      color: #e0e0e0 !important;
-      border-color: #4a4a4a !important;
-    }
-
-    /* Botón eliminar */
-    body.dark-mode .remove-item,
-    [data-theme="dark"] .remove-item {
-      color: #b0b0b0 !important;
-    }
-
-    body.dark-mode .remove-item:hover,
-    [data-theme="dark"] .remove-item:hover {
-      color: #ff6b6b !important;
-    }
-
-    /* ========== TARJETA DE RESUMEN ========== */
-    body.dark-mode .summary-card,
-    [data-theme="dark"] .summary-card {
-      background: #2a2a2a !important;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
-      border: 1px solid #3a3a3a !important;
-    }
-
-    body.dark-mode .summary-title,
-    [data-theme="dark"] .summary-title {
-      color: #f0f0f0 !important;
-    }
-
-    body.dark-mode .summary-line,
-    [data-theme="dark"] .summary-line {
-      color: #e0e0e0 !important;
-    }
-
-    body.dark-mode .summary-line span,
-    [data-theme="dark"] .summary-line span {
-      color: #e0e0e0 !important;
-    }
-
-    body.dark-mode .summary-line .amount,
-    [data-theme="dark"] .summary-line .amount {
-      color: #e0e0e0 !important;
-    }
-
-    body.dark-mode .summary-total,
-    [data-theme="dark"] .summary-total {
-      color: #f0f0f0 !important;
-      border-top-color: #4a4a4a !important;
-    }
-
-    body.dark-mode .summary-total span,
-    [data-theme="dark"] .summary-total span {
-      color: #f0f0f0 !important;
-    }
-
-    body.dark-mode .summary-total .amount,
-    [data-theme="dark"] .summary-total .amount {
-      color: #4fc3f7 !important;
-    }
-
-    /* ========== BOTONES ========== */
-    body.dark-mode .checkout-btn,
-    [data-theme="dark"] .checkout-btn {
-      background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%) !important;
-      color: #1a1a1a !important;
-      box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3) !important;
-    }
-
-    body.dark-mode .checkout-btn:hover,
-    [data-theme="dark"] .checkout-btn:hover {
-      background: linear-gradient(135deg, #29b6f6 0%, #039be5 100%) !important;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(79, 195, 247, 0.4) !important;
-    }
-
-    body.dark-mode .continue-shopping,
-    [data-theme="dark"] .continue-shopping {
-      background: transparent !important;
-      color: #e0e0e0 !important;
-      border-color: #4a4a4a !important;
-    }
-
-    body.dark-mode .continue-shopping:hover,
-    [data-theme="dark"] .continue-shopping:hover {
-      background: #3a3a3a !important;
-      border-color: #4fc3f7 !important;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(79, 195, 247, 0.2) !important;
-    }
-
-    body.dark-mode .shipping-note,
-    [data-theme="dark"] .shipping-note {
-      color: #808080 !important;
-    }
-
-    /* ========== CARRITO VACÍO ========== */
-    body.dark-mode .empty-cart,
-    [data-theme="dark"] .empty-cart {
-      color: #b0b0b0 !important;
-    }
-
-    body.dark-mode .empty-cart p,
-    [data-theme="dark"] .empty-cart p {
-      color: #b0b0b0 !important;
-    }
-
-    /* ========== MODAL ========== */
-    body.dark-mode .modal-overlay,
-    [data-theme="dark"] .modal-overlay {
-      background: rgba(0, 0, 0, 0.7) !important;
-    }
-
-    body.dark-mode .modal-container,
-    [data-theme="dark"] .modal-container {
-      background: #2a2a2a !important;
-      border: 1px solid #3a3a3a !important;
-    }
-
-    body.dark-mode .modal-title,
-    [data-theme="dark"] .modal-title {
-      color: #f0f0f0 !important;
-    }
-
-    body.dark-mode .modal-message,
-    [data-theme="dark"] .modal-message {
-      color: #b0b0b0 !important;
-    }
-
-    body.dark-mode .modal-icon.warning,
-    [data-theme="dark"] .modal-icon.warning {
-      background: rgba(255, 193, 7, 0.2) !important;
-      color: #ffc107 !important;
-    }
-
-    body.dark-mode .modal-icon.danger,
-    [data-theme="dark"] .modal-icon.danger {
-      background: rgba(244, 67, 54, 0.2) !important;
-      color: #f44336 !important;
-    }
-
-    body.dark-mode .modal-icon.success,
-    [data-theme="dark"] .modal-icon.success {
-      background: rgba(76, 175, 80, 0.2) !important;
-      color: #4caf50 !important;
-    }
-
-    body.dark-mode .modal-btn-cancel,
-    [data-theme="dark"] .modal-btn-cancel {
-      background: #3a3a3a !important;
-      color: #e0e0e0 !important;
-      border: 1px solid #4a4a4a !important;
-    }
-
-    body.dark-mode .modal-btn-cancel:hover,
-    [data-theme="dark"] .modal-btn-cancel:hover {
-      background: #4a4a4a !important;
-    }
-
-    body.dark-mode .modal-btn-confirm,
-    [data-theme="dark"] .modal-btn-confirm {
-      background: #f44336 !important;
-      color: white !important;
-    }
-
-    body.dark-mode .modal-btn-confirm:hover,
-    [data-theme="dark"] .modal-btn-confirm:hover {
-      background: #d32f2f !important;
-    }
-  </style>
 </head>
 
 <body>
@@ -787,45 +89,141 @@
 
         </div>
 
-        <!-- Columna derecha: Resumen de compra -->
-        <!-- ENTREGA 1 - Autor: Máximo Gallo -->
-        <!-- Resumen con subtotal, envío y total que se actualiza dinámicamente -->
+        <!-- Columna derecha: Resumen de compra y formularios -->
+        <!-- ENTREGA 5 - Autor: Máximo Gallo -->
+        <!-- Formulario completo de checkout con todas las secciones -->
         <div class="cart-summary">
-          <div class="summary-card">
-            <h2 class="summary-title">Resumen</h2>
+          
+          <!-- SECCIÓN 1: TIPO DE ENVÍO -->
+          <div class="summary-card mb-3">
+            <h2 class="summary-title">Tipo de envío</h2>
+            <div class="shipping-options">
+              <div class="shipping-option">
+                <input type="radio" id="shipping-premium" name="shipping-type" value="0.15" class="shipping-radio">
+                <label for="shipping-premium" class="shipping-label">
+                  <div class="shipping-info">
+                    <span class="shipping-name">Premium</span>
+                    <span class="shipping-time">2 a 5 días</span>
+                  </div>
+                  <span class="shipping-cost">15%</span>
+                </label>
+              </div>
+              <div class="shipping-option">
+                <input type="radio" id="shipping-express" name="shipping-type" value="0.07" class="shipping-radio">
+                <label for="shipping-express" class="shipping-label">
+                  <div class="shipping-info">
+                    <span class="shipping-name">Express</span>
+                    <span class="shipping-time">5 a 8 días</span>
+                  </div>
+                  <span class="shipping-cost">7%</span>
+                </label>
+              </div>
+              <div class="shipping-option">
+                <input type="radio" id="shipping-standard" name="shipping-type" value="0.05" class="shipping-radio" checked>
+                <label for="shipping-standard" class="shipping-label">
+                  <div class="shipping-info">
+                    <span class="shipping-name">Standard</span>
+                    <span class="shipping-time">12 a 15 días</span>
+                  </div>
+                  <span class="shipping-cost">5%</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-error" id="shipping-error" style="display: none;">
+              <i class="fa fa-exclamation-circle"></i> Debe seleccionar un tipo de envío
+            </div>
+          </div>
+
+          <!-- SECCIÓN 2: DIRECCIÓN DE ENVÍO -->
+          <div class="summary-card mb-3">
+            <h2 class="summary-title">Dirección de envío</h2>
+            <form id="shipping-address-form">
+              <div class="form-group">
+                <label for="department">Departamento <span class="required">*</span></label>
+                <input type="text" id="department" class="form-input" placeholder="Ej: Montevideo" required>
+                <div class="form-error" id="department-error" style="display: none;"></div>
+              </div>
+              <div class="form-group">
+                <label for="locality">Localidad <span class="required">*</span></label>
+                <input type="text" id="locality" class="form-input" placeholder="Ej: Pocitos" required>
+                <div class="form-error" id="locality-error" style="display: none;"></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="street">Calle <span class="required">*</span></label>
+                  <input type="text" id="street" class="form-input" placeholder="Ej: 18 de Julio" required>
+                  <div class="form-error" id="street-error" style="display: none;"></div>
+                </div>
+                <div class="form-group form-group-small">
+                  <label for="number">Número <span class="required">*</span></label>
+                  <input type="text" id="number" class="form-input" placeholder="1234" required>
+                  <div class="form-error" id="number-error" style="display: none;"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="corner">Esquina <span class="required">*</span></label>
+                <input type="text" id="corner" class="form-input" placeholder="Ej: Andes" required>
+                <div class="form-error" id="corner-error" style="display: none;"></div>
+              </div>
+            </form>
+          </div>
+
+          <!-- SECCIÓN 3: FORMA DE PAGO -->
+          <div class="summary-card mb-3">
+            <h2 class="summary-title">Forma de pago</h2>
+            <div class="payment-options">
+              <button type="button" class="payment-btn" id="payment-card-btn">
+                <i class="fa fa-credit-card"></i>
+                <span>Tarjeta de crédito</span>
+                <i class="fa fa-check payment-check" style="display: none;"></i>
+              </button>
+              <button type="button" class="payment-btn" id="payment-transfer-btn">
+                <i class="fa fa-university"></i>
+                <span>Transferencia bancaria</span>
+                <i class="fa fa-check payment-check" style="display: none;"></i>
+              </button>
+            </div>
+            <div class="form-error" id="payment-error" style="display: none;">
+              <i class="fa fa-exclamation-circle"></i> Debe seleccionar una forma de pago
+            </div>
+          </div>
+
+          <!-- SECCIÓN 4: COSTOS -->
+          <div class="summary-card mb-3">
+            <h2 class="summary-title">Resumen de compra</h2>
             
-            <!-- ENTREGA 4 - Autor: Máximo Gallo -->
-            <!-- Línea del subtotal - suma de todos los productos -->
+            <!-- ENTREGA 5 - Subtotal calculado -->
             <div class="summary-line">
               <span>Subtotal</span>
               <span id="subtotal-amount" class="amount">$0.00</span>
             </div>
             
-            <!-- Línea del costo de envío -->
+            <!-- ENTREGA 5 - Costo de envío (subtotal × porcentaje) -->
             <div class="summary-line">
-              <span>Envío</span>
-              <span id="shipping-amount" class="amount">GRATIS</span>
+              <span>Costo de envío <span id="shipping-percentage">(5%)</span></span>
+              <span id="shipping-amount" class="amount">$0.00</span>
             </div>
             
-            <!-- ENTREGA 4 - Autor: Máximo Gallo -->
-            <!-- Línea del total - se actualiza en tiempo real al cambiar cantidades -->
+            <!-- ENTREGA 5 - Total final -->
             <div class="summary-total">
               <span>Total</span>
               <span id="total-amount" class="amount">$0.00</span>
             </div>
-            
-            <!-- Botón para finalizar la compra -->
-            <button class="checkout-btn">Finalizar Compra</button>
-            
-            <!-- Botón para continuar comprando -->
-            <button class="continue-shopping" onclick="window.location.href='categories.html'">Continuar comprando</button>
-            
-            <!-- Nota informativa sobre el envío -->
-            <p class="shipping-note">
-              Envío gratuito en compras superiores a $500<br>
-              Devoluciones gratuitas en 14 días
-            </p>
           </div>
+
+          <!-- SECCIÓN 5: BOTONES DE ACCIÓN -->
+          <div class="summary-card">
+            <!-- Botón Finalizar Compra -->
+            <button class="checkout-btn" id="finalize-purchase-btn">
+              <i class="fa fa-shopping-cart"></i> Finalizar Compra
+            </button>
+            
+            <!-- Botón Continuar Comprando -->
+            <button class="continue-shopping" onclick="window.location.href='categories.html'">
+              <i class="fa fa-arrow-left"></i> Continuar comprando
+            </button>
+          </div>
+
         </div>
 
       </div>
@@ -850,6 +248,112 @@
       <div class="modal-actions">
         <button id="modal-cancel" class="modal-btn modal-btn-cancel">Cancelar</button>
         <button id="modal-confirm" class="modal-btn modal-btn-confirm">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- ENTREGA 5 - MODAL TARJETA DE CRÉDITO -->
+  <!-- ============================================ -->
+  <div id="payment-card-modal" class="payment-modal-overlay">
+    <div class="payment-modal">
+      <div class="payment-modal-header">
+        <h3 class="payment-modal-title">Tarjeta de crédito</h3>
+        <button class="payment-modal-close" id="close-card-modal" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="payment-modal-body">
+        <form id="card-payment-form">
+          <div class="form-group">
+            <label for="card-number">Número de tarjeta <span class="required">*</span></label>
+            <input type="text" id="card-number" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19" required>
+            <div class="form-error" id="card-number-error" style="display: none;"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-expiry">Vencimiento <span class="required">*</span></label>
+              <input type="text" id="card-expiry" class="form-input" placeholder="MM/AA" maxlength="5" required>
+              <div class="form-error" id="card-expiry-error" style="display: none;"></div>
+            </div>
+            <div class="form-group">
+              <label for="card-cvv">CVV <span class="required">*</span></label>
+              <input type="text" id="card-cvv" class="form-input" placeholder="123" maxlength="4" required>
+              <div class="form-error" id="card-cvv-error" style="display: none;"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="card-name">Nombre del titular <span class="required">*</span></label>
+            <input type="text" id="card-name" class="form-input" placeholder="JUAN PEREZ" required>
+            <div class="form-error" id="card-name-error" style="display: none;"></div>
+          </div>
+        </form>
+      </div>
+      <div class="payment-modal-footer">
+        <button class="modal-btn modal-btn-cancel" id="cancel-card-modal">Cancelar</button>
+        <button class="modal-btn modal-btn-save" id="save-card-payment">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- ENTREGA 5 - MODAL TRANSFERENCIA BANCARIA -->
+  <!-- ============================================ -->
+  <div id="payment-transfer-modal" class="payment-modal-overlay">
+    <div class="payment-modal">
+      <div class="payment-modal-header">
+        <h3 class="payment-modal-title">Transferencia bancaria</h3>
+        <button class="payment-modal-close" id="close-transfer-modal" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="payment-modal-body">
+        <form id="transfer-payment-form">
+          <div class="form-group">
+            <label for="bank-name">Banco <span class="required">*</span></label>
+            <select id="bank-name" class="form-input" required>
+              <option value="">Seleccione un banco</option>
+              <option value="BROU">Banco República</option>
+              <option value="Santander">Santander</option>
+              <option value="BBVA">BBVA</option>
+              <option value="Itau">Itaú</option>
+              <option value="Scotiabank">Scotiabank</option>
+              <option value="Heritage">Heritage</option>
+            </select>
+            <div class="form-error" id="bank-name-error" style="display: none;"></div>
+          </div>
+          <div class="form-group">
+            <label for="account-number">Número de cuenta <span class="required">*</span></label>
+            <input type="text" id="account-number" class="form-input" placeholder="Ej: 123456789" required>
+            <div class="form-error" id="account-number-error" style="display: none;"></div>
+          </div>
+          <div class="form-group">
+            <label for="account-holder">Titular de la cuenta <span class="required">*</span></label>
+            <input type="text" id="account-holder" class="form-input" placeholder="Ej: Juan Pérez" required>
+            <div class="form-error" id="account-holder-error" style="display: none;"></div>
+          </div>
+        </form>
+      </div>
+      <div class="payment-modal-footer">
+        <button class="modal-btn modal-btn-cancel" id="cancel-transfer-modal">Cancelar</button>
+        <button class="modal-btn modal-btn-save" id="save-transfer-payment">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- ENTREGA 5 - MODAL COMPRA EXITOSA -->
+  <!-- ============================================ -->
+  <div id="success-modal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-icon success">
+          <i class="fa fa-check"></i>
+        </div>
+        <h3 class="modal-title">¡Compra exitosa!</h3>
+      </div>
+      <p class="modal-message">
+        Tu pedido ha sido procesado correctamente. Recibirás un correo con los detalles de tu compra.
+      </p>
+      <div id="purchase-summary" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 14px;"></div>
+      <div class="modal-actions">
+        <button id="close-success-modal" class="modal-btn modal-btn-primary">Aceptar</button>
       </div>
     </div>
   </div>

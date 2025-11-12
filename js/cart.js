@@ -1,20 +1,33 @@
 // ============================================
 // CARRITO DE COMPRAS - eMercado
 // Autor: Máximo Gallo
+// ENTREGA 5 - Versión completa con checkout
 // ============================================
-// Este archivo maneja toda la funcionalidad del carrito de compras
 
 // ============================================
-// ENTREGA 3 - Autor: Máximo Gallo
-// Función para cargar productos del localStorage al cargar la página
+// VARIABLES GLOBALES
+// ============================================
+let selectedPaymentMethod = null; // 'card' o 'transfer'
+let paymentData = {}; // Almacena los datos del método de pago seleccionado
+
+// ============================================
+// INICIALIZACIÓN - Al cargar la página
 // ============================================
 document.addEventListener("DOMContentLoaded", function() {
-  
   // PASO 1: Cargar productos desde localStorage
   cargarCarrito();
   
   // PASO 2: Actualizar badge del carrito en el navbar
   actualizarBadgeCarrito();
+  
+  // PASO 3: Configurar eventos de tipo de envío
+  configurarEventosEnvio();
+  
+  // PASO 4: Configurar eventos de forma de pago
+  configurarEventosPago();
+  
+  // PASO 5: Configurar evento del botón finalizar compra
+  configurarBotonFinalizarCompra();
 });
 
 // ============================================
@@ -307,8 +320,8 @@ function eliminarProducto(index) {
 
 // ============================================
 // ENTREGA 4 - Autor: Máximo Gallo
-// Función que actualiza el resumen de compra en tiempo real
-// Calcula subtotal, envío y total
+// ENTREGA 5 - Función mejorada que actualiza el resumen de compra
+// Calcula: subtotal, envío (basado en porcentaje seleccionado) y total
 // ============================================
 function actualizarResumen() {
   // Obtener productos del carrito
@@ -316,25 +329,533 @@ function actualizarResumen() {
   
   // Variables para los cálculos
   let subtotal = 0;
-  let envio = 29.00; // Costo fijo de envío
   
   // Calcular subtotal sumando todos los productos
   cartItems.forEach(function(producto) {
     subtotal += producto.cost * producto.quantity;
   });
   
-  // Si el subtotal es mayor a 500, el envío es gratis
-  if (subtotal > 500) {
-    envio = 0;
-  }
+  // Obtener el porcentaje de envío seleccionado (default 5% = 0.05)
+  let shippingPercentage = obtenerPorcentajeEnvio();
+  
+  // Calcular costo de envío
+  let costoEnvio = subtotal * shippingPercentage;
   
   // Calcular el total
-  let total = subtotal + envio;
+  let total = subtotal + costoEnvio;
   
   // Actualizar los valores en el HTML
   document.getElementById('subtotal-amount').textContent = '$' + subtotal.toFixed(2);
-  document.getElementById('shipping-amount').textContent = envio > 0 ? '$' + envio.toFixed(2) : 'GRATIS';
+  document.getElementById('shipping-amount').textContent = '$' + costoEnvio.toFixed(2);
   document.getElementById('total-amount').textContent = '$' + total.toFixed(2);
+  
+  // Actualizar el texto del porcentaje
+  let percentageText = (shippingPercentage * 100) + '%';
+  document.getElementById('shipping-percentage').textContent = '(' + percentageText + ')';
+}
+
+// ============================================
+// ENTREGA 5 - Función que obtiene el porcentaje de envío seleccionado
+// ============================================
+function obtenerPorcentajeEnvio() {
+  let radioSeleccionado = document.querySelector('input[name="shipping-type"]:checked');
+  if (radioSeleccionado) {
+    return parseFloat(radioSeleccionado.value);
+  }
+  return 0.05; // Default: 5%
+}
+
+// ============================================
+// ENTREGA 5 - Configurar eventos de tipo de envío
+// ============================================
+function configurarEventosEnvio() {
+  let radios = document.querySelectorAll('input[name="shipping-type"]');
+  radios.forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      // Ocultar error si estaba visible
+      document.getElementById('shipping-error').style.display = 'none';
+      // Actualizar resumen cuando cambia el tipo de envío
+      actualizarResumen();
+    });
+  });
+}
+
+// ============================================
+// ENTREGA 5 - Configurar eventos de forma de pago
+// ============================================
+function configurarEventosPago() {
+  // Botón de tarjeta de crédito
+  document.getElementById('payment-card-btn').addEventListener('click', function() {
+    abrirModalPago('card');
+  });
+  
+  // Botón de transferencia bancaria
+  document.getElementById('payment-transfer-btn').addEventListener('click', function() {
+    abrirModalPago('transfer');
+  });
+  
+  // === MODAL TARJETA DE CRÉDITO ===
+  
+  // Cerrar modal (X)
+  document.getElementById('close-card-modal').addEventListener('click', function() {
+    cerrarModalPago('card');
+  });
+  
+  // Cancelar modal
+  document.getElementById('cancel-card-modal').addEventListener('click', function() {
+    cerrarModalPago('card');
+  });
+  
+  // Guardar datos de tarjeta
+  document.getElementById('save-card-payment').addEventListener('click', function() {
+    guardarDatosPago('card');
+  });
+  
+  // Formateo automático del número de tarjeta
+  document.getElementById('card-number').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s/g, '');
+    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+    e.target.value = formattedValue;
+  });
+  
+  // Formateo automático de fecha de vencimiento
+  document.getElementById('card-expiry').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    e.target.value = value;
+  });
+  
+  // Solo números en CVV
+  document.getElementById('card-cvv').addEventListener('input', function(e) {
+    e.target.value = e.target.value.replace(/\D/g, '');
+  });
+  
+  // === MODAL TRANSFERENCIA BANCARIA ===
+  
+  // Cerrar modal (X)
+  document.getElementById('close-transfer-modal').addEventListener('click', function() {
+    cerrarModalPago('transfer');
+  });
+  
+  // Cancelar modal
+  document.getElementById('cancel-transfer-modal').addEventListener('click', function() {
+    cerrarModalPago('transfer');
+  });
+  
+  // Guardar datos de transferencia
+  document.getElementById('save-transfer-payment').addEventListener('click', function() {
+    guardarDatosPago('transfer');
+  });
+  
+  // Cerrar modal al hacer click fuera
+  document.getElementById('payment-card-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      cerrarModalPago('card');
+    }
+  });
+  
+  document.getElementById('payment-transfer-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      cerrarModalPago('transfer');
+    }
+  });
+}
+
+// ============================================
+// ENTREGA 5 - Abrir modal de pago
+// ============================================
+function abrirModalPago(tipo) {
+  if (tipo === 'card') {
+    document.getElementById('payment-card-modal').classList.add('active');
+  } else if (tipo === 'transfer') {
+    document.getElementById('payment-transfer-modal').classList.add('active');
+  }
+}
+
+// ============================================
+// ENTREGA 5 - Cerrar modal de pago
+// ============================================
+function cerrarModalPago(tipo) {
+  if (tipo === 'card') {
+    document.getElementById('payment-card-modal').classList.remove('active');
+    // Limpiar errores
+    limpiarErroresFormulario('card-payment-form');
+  } else if (tipo === 'transfer') {
+    document.getElementById('payment-transfer-modal').classList.remove('active');
+    // Limpiar errores
+    limpiarErroresFormulario('transfer-payment-form');
+  }
+}
+
+// ============================================
+// ENTREGA 5 - Guardar datos del método de pago
+// ============================================
+function guardarDatosPago(tipo) {
+  let valido = false;
+  
+  if (tipo === 'card') {
+    valido = validarFormularioTarjeta();
+    if (valido) {
+      // Guardar datos (en la práctica, esto sería encriptado)
+      paymentData = {
+        tipo: 'card',
+        numero: document.getElementById('card-number').value,
+        vencimiento: document.getElementById('card-expiry').value,
+        cvv: document.getElementById('card-cvv').value,
+        titular: document.getElementById('card-name').value
+      };
+      selectedPaymentMethod = 'card';
+      
+      // Marcar botón como activo
+      marcarMetodoPagoActivo('payment-card-btn');
+      
+      // Cerrar modal
+      cerrarModalPago('card');
+      
+      // Ocultar error general si estaba visible
+      document.getElementById('payment-error').style.display = 'none';
+    }
+  } else if (tipo === 'transfer') {
+    valido = validarFormularioTransferencia();
+    if (valido) {
+      // Guardar datos
+      paymentData = {
+        tipo: 'transfer',
+        banco: document.getElementById('bank-name').value,
+        cuenta: document.getElementById('account-number').value,
+        titular: document.getElementById('account-holder').value
+      };
+      selectedPaymentMethod = 'transfer';
+      
+      // Marcar botón como activo
+      marcarMetodoPagoActivo('payment-transfer-btn');
+      
+      // Cerrar modal
+      cerrarModalPago('transfer');
+      
+      // Ocultar error general si estaba visible
+      document.getElementById('payment-error').style.display = 'none';
+    }
+  }
+}
+
+// ============================================
+// ENTREGA 5 - Marcar método de pago como activo
+// ============================================
+function marcarMetodoPagoActivo(botonId) {
+  // Quitar clase active de todos los botones
+  document.querySelectorAll('.payment-btn').forEach(function(btn) {
+    btn.classList.remove('active');
+    btn.querySelector('.payment-check').style.display = 'none';
+  });
+  
+  // Agregar clase active al botón seleccionado
+  let boton = document.getElementById(botonId);
+  boton.classList.add('active');
+  boton.querySelector('.payment-check').style.display = 'block';
+}
+
+// ============================================
+// ENTREGA 5 - Validar formulario de tarjeta
+// ============================================
+function validarFormularioTarjeta() {
+  let valido = true;
+  
+  // Limpiar errores previos
+  limpiarErroresFormulario('card-payment-form');
+  
+  // Validar número de tarjeta
+  let numero = document.getElementById('card-number').value.replace(/\s/g, '');
+  if (numero.length < 13 || numero.length > 19) {
+    mostrarError('card-number', 'Número de tarjeta inválido');
+    valido = false;
+  }
+  
+  // Validar vencimiento
+  let vencimiento = document.getElementById('card-expiry').value;
+  if (!/^\d{2}\/\d{2}$/.test(vencimiento)) {
+    mostrarError('card-expiry', 'Formato: MM/AA');
+    valido = false;
+  } else {
+    // Validar que la fecha no esté vencida
+    let [mes, año] = vencimiento.split('/').map(Number);
+    let fechaActual = new Date();
+    let mesActual = fechaActual.getMonth() + 1;
+    let añoActual = fechaActual.getFullYear() % 100;
+    
+    if (año < añoActual || (año === añoActual && mes < mesActual)) {
+      mostrarError('card-expiry', 'Tarjeta vencida');
+      valido = false;
+    }
+  }
+  
+  // Validar CVV
+  let cvv = document.getElementById('card-cvv').value;
+  if (cvv.length < 3 || cvv.length > 4) {
+    mostrarError('card-cvv', 'CVV inválido');
+    valido = false;
+  }
+  
+  // Validar nombre
+  let nombre = document.getElementById('card-name').value.trim();
+  if (nombre.length < 3) {
+    mostrarError('card-name', 'Ingrese el nombre del titular');
+    valido = false;
+  }
+  
+  return valido;
+}
+
+// ============================================
+// ENTREGA 5 - Validar formulario de transferencia
+// ============================================
+function validarFormularioTransferencia() {
+  let valido = true;
+  
+  // Limpiar errores previos
+  limpiarErroresFormulario('transfer-payment-form');
+  
+  // Validar banco
+  let banco = document.getElementById('bank-name').value;
+  if (!banco) {
+    mostrarError('bank-name', 'Seleccione un banco');
+    valido = false;
+  }
+  
+  // Validar número de cuenta
+  let cuenta = document.getElementById('account-number').value.trim();
+  if (cuenta.length < 6) {
+    mostrarError('account-number', 'Número de cuenta inválido');
+    valido = false;
+  }
+  
+  // Validar titular
+  let titular = document.getElementById('account-holder').value.trim();
+  if (titular.length < 3) {
+    mostrarError('account-holder', 'Ingrese el nombre del titular');
+    valido = false;
+  }
+  
+  return valido;
+}
+
+// ============================================
+// ENTREGA 5 - Mostrar error en campo específico
+// ============================================
+function mostrarError(campoId, mensaje) {
+  let campo = document.getElementById(campoId);
+  let errorDiv = document.getElementById(campoId + '-error');
+  
+  campo.classList.add('error');
+  campo.classList.remove('success');
+  
+  if (errorDiv) {
+    errorDiv.textContent = mensaje;
+    errorDiv.style.display = 'flex';
+  }
+}
+
+// ============================================
+// ENTREGA 5 - Limpiar errores de un formulario
+// ============================================
+function limpiarErroresFormulario(formId) {
+  let form = document.getElementById(formId);
+  if (!form) return;
+  
+  // Quitar clases de error de todos los inputs
+  form.querySelectorAll('.form-input').forEach(function(input) {
+    input.classList.remove('error');
+    input.classList.remove('success');
+  });
+  
+  // Ocultar todos los mensajes de error
+  form.querySelectorAll('.form-error').forEach(function(errorDiv) {
+    errorDiv.style.display = 'none';
+  });
+}
+
+// ============================================
+// ENTREGA 5 - Configurar botón Finalizar Compra
+// ============================================
+function configurarBotonFinalizarCompra() {
+  document.getElementById('finalize-purchase-btn').addEventListener('click', function() {
+    finalizarCompra();
+  });
+}
+
+// ============================================
+// ENTREGA 5 - Función principal para finalizar la compra
+// Realiza todas las validaciones y muestra modal de éxito
+// ============================================
+function finalizarCompra() {
+  // Array para almacenar errores
+  let errores = [];
+  
+  // === VALIDACIÓN 1: Verificar que hay productos en el carrito ===
+  let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  if (cartItems.length === 0) {
+    alert('El carrito está vacío');
+    return;
+  }
+  
+  // === VALIDACIÓN 2: Verificar cantidades de productos ===
+  let cantidadesValidas = true;
+  cartItems.forEach(function(producto) {
+    if (!producto.quantity || producto.quantity <= 0) {
+      cantidadesValidas = false;
+    }
+  });
+  
+  if (!cantidadesValidas) {
+    errores.push('Las cantidades de los productos deben ser mayores a 0');
+  }
+  
+  // === VALIDACIÓN 3: Verificar tipo de envío seleccionado ===
+  let tipoEnvioSeleccionado = document.querySelector('input[name="shipping-type"]:checked');
+  if (!tipoEnvioSeleccionado) {
+    errores.push('Debe seleccionar un tipo de envío');
+    document.getElementById('shipping-error').style.display = 'flex';
+    // Scroll al error
+    document.getElementById('shipping-error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  
+  // === VALIDACIÓN 4: Verificar dirección de envío ===
+  let direccionValida = validarDireccionEnvio();
+  if (!direccionValida) {
+    errores.push('Complete todos los campos de dirección de envío');
+  }
+  
+  // === VALIDACIÓN 5: Verificar forma de pago seleccionada ===
+  if (!selectedPaymentMethod) {
+    errores.push('Debe seleccionar y completar una forma de pago');
+    document.getElementById('payment-error').style.display = 'flex';
+    // Scroll al error
+    document.getElementById('payment-error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  
+  // === SI HAY ERRORES: Mostrar y detener ===
+  if (errores.length > 0) {
+    // Mostrar primer error
+    alert('Por favor corrija los siguientes errores:\n\n• ' + errores.join('\n• '));
+    return;
+  }
+  
+  // === SI TODO ES VÁLIDO: Procesar compra ===
+  procesarCompraExitosa();
+}
+
+// ============================================
+// ENTREGA 5 - Validar dirección de envío
+// ============================================
+function validarDireccionEnvio() {
+  let valido = true;
+  
+  // Campos requeridos
+  let campos = [
+    { id: 'department', nombre: 'Departamento' },
+    { id: 'locality', nombre: 'Localidad' },
+    { id: 'street', nombre: 'Calle' },
+    { id: 'number', nombre: 'Número' },
+    { id: 'corner', nombre: 'Esquina' }
+  ];
+  
+  // Limpiar errores previos
+  campos.forEach(function(campo) {
+    let input = document.getElementById(campo.id);
+    let errorDiv = document.getElementById(campo.id + '-error');
+    input.classList.remove('error');
+    input.classList.remove('success');
+    if (errorDiv) errorDiv.style.display = 'none';
+  });
+  
+  // Validar cada campo
+  campos.forEach(function(campo) {
+    let input = document.getElementById(campo.id);
+    let valor = input.value.trim();
+    
+    if (!valor) {
+      mostrarError(campo.id, 'Este campo es requerido');
+      valido = false;
+    } else {
+      // Marcar como válido
+      input.classList.add('success');
+      input.classList.remove('error');
+    }
+  });
+  
+  return valido;
+}
+
+// ============================================
+// ENTREGA 5 - Procesar compra exitosa
+// ============================================
+function procesarCompraExitosa() {
+  // Obtener datos para el resumen
+  let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  let subtotal = 0;
+  
+  cartItems.forEach(function(producto) {
+    subtotal += producto.cost * producto.quantity;
+  });
+  
+  let porcentajeEnvio = obtenerPorcentajeEnvio();
+  let costoEnvio = subtotal * porcentajeEnvio;
+  let total = subtotal + costoEnvio;
+  
+  // Obtener tipo de envío
+  let tipoEnvio = document.querySelector('input[name="shipping-type"]:checked');
+  let tipoEnvioNombre = '';
+  if (tipoEnvio) {
+    let label = document.querySelector(`label[for="${tipoEnvio.id}"]`);
+    tipoEnvioNombre = label.querySelector('.shipping-name').textContent;
+  }
+  
+  // Obtener método de pago
+  let metodoPago = '';
+  if (selectedPaymentMethod === 'card') {
+    metodoPago = 'Tarjeta de crédito';
+  } else if (selectedPaymentMethod === 'transfer') {
+    metodoPago = 'Transferencia bancaria';
+  }
+  
+  // Crear resumen HTML
+  let resumenHTML = `
+    <div style="text-align: left;">
+      <p><strong>Productos:</strong> ${cartItems.length} artículo(s)</p>
+      <p><strong>Subtotal:</strong> $${subtotal.toFixed(2)}</p>
+      <p><strong>Envío ${tipoEnvioNombre}:</strong> $${costoEnvio.toFixed(2)}</p>
+      <p><strong>Total:</strong> $${total.toFixed(2)}</p>
+      <hr style="margin: 10px 0;">
+      <p><strong>Método de pago:</strong> ${metodoPago}</p>
+      <p><strong>Dirección:</strong> ${document.getElementById('street').value} ${document.getElementById('number').value}, ${document.getElementById('locality').value}</p>
+    </div>
+  `;
+  
+  // Mostrar modal de éxito
+  document.getElementById('purchase-summary').innerHTML = resumenHTML;
+  document.getElementById('success-modal').classList.add('active');
+  
+  // Configurar botón de cerrar
+  document.getElementById('close-success-modal').onclick = function() {
+    document.getElementById('success-modal').classList.remove('active');
+    
+    // Limpiar carrito
+    localStorage.setItem('cart', JSON.stringify([]));
+    
+    // Recargar página para mostrar carrito vacío
+    window.location.reload();
+  };
+  
+  // Cerrar modal al hacer click fuera
+  document.getElementById('success-modal').onclick = function(e) {
+    if (e.target === this) {
+      this.classList.remove('active');
+      localStorage.setItem('cart', JSON.stringify([]));
+      window.location.reload();
+    }
+  };
 }
 
 // ============================================
