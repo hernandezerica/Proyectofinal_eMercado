@@ -1,54 +1,274 @@
+/* ============================================ */
+/* MY PROFILE - DISEÑO FIGMA */
+/* Estilos minimalistas para el perfil de usuario */
+/* ============================================ */
+
 body {
   transition: background-color 0.3s, color 0.3s;
-}
-
-.card {
-  border-radius: 12px;
-  transition: background-color 0.3s, color 0.3s, border 0.3s;
-}
-
-.drop-zone {
-  border: 2px dashed #aaa;
-  border-radius: 10px;
-  padding: 30px;
-  color: #777;
-  cursor: pointer;
-  transition: border 0.3s, background-color 0.3s;
-}
-
-.drop-zone:hover {
-  border-color: #007bff;
-  background-color: rgba(0, 123, 255, 0.05);
+  font-family: 'Raleway', sans-serif;
 }
 
 /* 🌞 Modo claro */
 .light-mode {
-  background-color: #f8f9fa;
-  color: #212529;
-}
-
-.light-mode .card {
-  background-color: white;
-  color: #212529;
+  background-color: #f5f5f5;
+  color: #333;
 }
 
 /* 🌙 Modo oscuro */
 .dark-mode {
-  background-color: #212529;
-  color: #f8f9fa;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
 }
 
-.dark-mode .card {
-  background-color: #2c2f33;
-  color: #f8f9fa;
+/* ============================================ */
+/* TARJETAS DE PERFIL */
+/* ============================================ */
+
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.dark-mode .profile-card {
+  background: #2a2a2a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Header de las tarjetas */
+.card-header-custom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 24px;
+  background: #f8f8f8;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dark-mode .card-header-custom {
+  background: #333;
+  border-bottom: 1px solid #444;
+}
+
+.card-header-custom i {
+  font-size: 20px;
+  color: #666;
+}
+
+.dark-mode .card-header-custom i {
+  color: #aaa;
+}
+
+.card-header-custom h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.dark-mode .card-header-custom h5 {
+  color: #f0f0f0;
+}
+
+/* Body de las tarjetas */
+.card-body-custom {
+  padding: 32px 24px;
+}
+
+/* ============================================ */
+/* DROP ZONE - SUBIR IMAGEN */
+/* ============================================ */
+
+.drop-zone {
+  border: 2px dashed #d0d0d0;
+  border-radius: 8px;
+  padding: 60px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #fafafa;
+  margin-bottom: 20px;
+}
+
+.drop-zone:hover {
+  border-color: #007bff;
+  background: #f0f8ff;
 }
 
 .dark-mode .drop-zone {
-  border-color: #555;
-  color: #ccc;
+  border-color: #444;
+  background: #222;
+  color: #aaa;
 }
 
 .dark-mode .drop-zone:hover {
   border-color: #0d6efd;
-  background-color: rgba(13, 110, 253, 0.1);
+  background: #1a2332;
+}
+
+.drop-zone i {
+  font-size: 48px;
+  color: #999;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.dark-mode .drop-zone i {
+  color: #666;
+}
+
+.drop-zone p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.dark-mode .drop-zone p {
+  color: #aaa;
+}
+
+.drop-zone .drop-hint {
+  font-size: 12px;
+  color: #999;
+  margin-top: 8px;
+}
+
+.dark-mode .drop-zone .drop-hint {
+  color: #666;
+}
+
+/* Preview de la imagen */
+.preview-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+  margin: 0 auto 20px;
+  display: block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================ */
+/* FORMULARIO */
+/* ============================================ */
+
+.form-group-custom {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.form-input-custom {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.dark-mode .form-input-custom {
+  background: #222;
+  border-color: #444;
+  color: #f0f0f0;
+}
+
+.form-input-custom:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.dark-mode .form-input-custom:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
+}
+
+/* Floating labels */
+.form-label-custom {
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  font-size: 14px;
+  color: #999;
+  background: white;
+  padding: 0 4px;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.dark-mode .form-label-custom {
+  background: #222;
+  color: #666;
+}
+
+.form-input-custom:focus + .form-label-custom,
+.form-input-custom:not(:placeholder-shown) + .form-label-custom {
+  top: -8px;
+  font-size: 12px;
+  color: #007bff;
+}
+
+.dark-mode .form-input-custom:focus + .form-label-custom,
+.dark-mode .form-input-custom:not(:placeholder-shown) + .form-label-custom {
+  color: #0d6efd;
+  background: #2a2a2a;
+}
+
+/* ============================================ */
+/* BOTÓN ENVIAR */
+/* ============================================ */
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 8px;
+}
+
+.btn-submit:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+.dark-mode .btn-submit {
+  background: #0d6efd;
+}
+
+.dark-mode .btn-submit:hover {
+  background: #0b5ed7;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+}
+
+/* ============================================ */
+/* RESPONSIVE */
+/* ============================================ */
+
+@media (max-width: 768px) {
+  .card-body-custom {
+    padding: 24px 20px;
+  }
+  
+  .drop-zone {
+    padding: 40px 20px;
+  }
+  
+  .drop-zone i {
+    font-size: 36px;
+  }
 }
