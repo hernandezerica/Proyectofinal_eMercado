@@ -1,11 +1,13 @@
-const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
-const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
-const PRODUCTS_URL = "https://japceibal.github.io/emercado-api/cats_products/";
-const PRODUCT_INFO_URL = "https://japceibal.github.io/emercado-api/products/";
-const PRODUCT_INFO_COMMENTS_URL = "https://japceibal.github.io/emercado-api/products_comments/";
-const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
-const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
-const EXT_TYPE = ".json";
+// Base cambiada para apuntar al backend local protegido con JWT
+const API_BASE = "http://localhost:3000";
+const CATEGORIES_URL = API_BASE + "/cats";
+const PUBLISH_PRODUCT_URL = API_BASE + "/sell/publish.json";
+const PRODUCTS_URL = API_BASE + "/cats_products/";
+const PRODUCT_INFO_URL = API_BASE + "/products/";
+const PRODUCT_INFO_COMMENTS_URL = API_BASE + "/products_comments/";
+const CART_INFO_URL = API_BASE + "/user_cart/";
+const CART_BUY_URL = API_BASE + "/cart/buy.json";
+const EXT_TYPE = ""; // Quitado .json porque el backend no lo necesita
 
 let showSpinner = function(){
   document.getElementById("spinner-wrapper").style.display = "block";
@@ -18,8 +20,29 @@ let hideSpinner = function(){
 let getJSONData = function(url){
     let result = {};
     showSpinner();
-    return fetch(url)
+    
+    // Obtener token de autenticación
+    const token = localStorage.getItem('authToken');
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+    
+    // Si hay token, agregarlo al header
+    if (token) {
+        headers['Authorization'] = 'Bearer ' + token;
+    }
+    
+    return fetch(url, { headers })
     .then(response => {
+      if (response.status === 401) {
+        // Token inválido o expirado
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userData');
+        localStorage.setItem('isLoggedIn', 'false');
+        alert('Sesión expirada. Por favor, inicia sesión nuevamente.');
+        window.location.href = 'login.html';
+        throw Error('Unauthorized');
+      }
       if (response.ok) {
         return response.json();
       }else{

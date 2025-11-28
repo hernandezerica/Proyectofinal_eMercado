@@ -13,6 +13,62 @@ nav a {
   text-decoration: none;
 }
 
+/* Estilos para el dropdown de usuario */
+.dropdown-toggle::after {
+  margin-left: 0.5em;
+}
+
+.dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  min-width: 180px;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  padding-left: 1.2rem;
+}
+
+.dropdown-item i {
+  margin-right: 8px;
+  width: 16px;
+  display: inline-block;
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+}
+
+#userDropdown {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 50px;
+  transition: background-color 0.2s ease;
+}
+
+#userDropdown:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+#navUserName {
+  font-weight: 500;
+}
+
+#navProfileImage {
+  transition: transform 0.2s ease;
+}
+
+#userDropdown:hover #navProfileImage {
+  transform: scale(1.05);
+}
+
+
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;

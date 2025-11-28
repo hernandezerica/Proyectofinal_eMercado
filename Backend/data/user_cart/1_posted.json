@@ -1,0 +1,14 @@
+{
+  "userId": 1,
+  "items": [
+    {
+      "product_id": 40281,
+      "count": 2
+    },
+    {
+      "product_id": 50741,
+      "count": 1
+    }
+  ],
+  "savedAt": "2025-11-28T10:12:01.265Z"
+}

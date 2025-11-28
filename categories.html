@@ -58,7 +58,17 @@
               </span>
             </a>
           </li>
-          <li class="nav-item">
+          <!-- Dropdown de usuario -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span id="navUserName" class="text-white me-2"></span>
+              <img id="navProfileImage" src="img/userProfile.webp" alt="Foto de perfil" class="rounded-circle border border-light" width="40" height="40">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="my-profile.html"><i class="bi bi-person-circle"></i> Mi Perfil</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" id="logout-link"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
+            </ul>
           </li>
           <!-- Toggle de tema claro/oscuro -->
           <li class="nav-item">
@@ -137,6 +147,8 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/categories.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/manejoSesion.js"></script>
 </body>
 
 </html>

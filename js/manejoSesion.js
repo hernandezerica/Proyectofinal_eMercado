@@ -30,8 +30,24 @@ document.addEventListener('DOMContentLoaded', function () {
     // cerrar sesión.
     function logout() {
         localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("userData"); // Corregido: ahora usa "userData"
+        localStorage.removeItem("userData");
+        localStorage.removeItem("authToken"); // Limpiar token JWT
+        localStorage.removeItem("cart"); // Opcional: limpiar carrito
         window.location.href = "login.html";
+    }
+
+    // Hacer logout global
+    window.logout = logout;
+
+    // Configurar evento de cerrar sesión en el dropdown
+    const logoutLink = document.getElementById('logout-link');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                logout();
+            }
+        });
     }
 
 });

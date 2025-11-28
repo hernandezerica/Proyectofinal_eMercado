@@ -85,7 +85,7 @@
   // ============================================
   // ENTREGA 5 - Procesar compra exitosa
   // ============================================
-  function procesarCompraExitosa() {
+  async function procesarCompraExitosa() {
     // Obtener datos para el resumen
     let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     let subtotal = 0;
@@ -93,6 +93,11 @@
     cartItems.forEach(function(producto) {
       subtotal += producto.cost * producto.quantity;
     });
+    
+    // ============================================
+    // DESAFÍATE - Enviar carrito al backend
+    // ============================================
+    await enviarCarritoAlBackend(cartItems);
     
     let porcentajeEnvio = 0.05;
     if (window.obtenerPorcentajeEnvio) {
@@ -153,6 +158,43 @@
         window.location.reload();
       }
     };
+  }
+  
+  // ============================================
+  // DESAFÍATE - Enviar carrito al backend (POST /cart)
+  // ============================================
+  async function enviarCarritoAlBackend(cartItems) {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      console.warn('No hay token de autenticación, saltando envío al backend');
+      return;
+    }
+    
+    // Transformar items al formato esperado por el backend
+    const items = cartItems.map(producto => ({
+      product_id: producto.id,
+      count: producto.quantity
+    }));
+    
+    try {
+      const response = await fetch('http://localhost:3000/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ items })
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        console.log('✅ Carrito guardado en backend:', result);
+      } else {
+        console.error('Error al guardar carrito:', await response.json());
+      }
+    } catch (error) {
+      console.error('Error de conexión al enviar carrito:', error);
+    }
   }
   
   // ============================================

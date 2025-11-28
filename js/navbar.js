@@ -15,7 +15,14 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // Mostrar nombre
-  if (navName && userData.name) {
-    navName.textContent = userData.name;
+  if (navName) {
+    if (userData.name) {
+      navName.textContent = userData.name;
+    } else if (userData.email) {
+      // Si no hay nombre, mostrar email
+      navName.textContent = userData.email.split('@')[0];
+    } else {
+      navName.textContent = "Usuario";
+    }
   }
 });
